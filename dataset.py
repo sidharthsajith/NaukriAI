@@ -3,7 +3,7 @@ import json
 from typing import List, Dict, Any
 
 class CandidateGenerator:
-    def __init__(self, num_candidates: int = 10000):
+    def __init__(self, num_candidates: int = 50):
         self.num_candidates = num_candidates
         self.names = self._load_names()
         self.locations = [
