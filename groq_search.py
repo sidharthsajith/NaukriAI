@@ -1,11 +1,9 @@
 import os
 import json
-import re
-from typing import List, Dict, Any, Set, Optional
+from typing import List, Dict, Any
 from groq import Groq
-from collections import defaultdict
-from dataclasses import dataclass, asdict
-from typing import List, Dict, Any, Optional
+from dataclasses import dataclass
+from typing import List, Dict, Any
 
 @dataclass
 class Candidate:
@@ -219,40 +217,3 @@ class AICandidateSearch:
         Return the results as a JSON dump string.
         """
         return json.dumps(results, indent=2) if results else "[]"
-
-def interactive_search():
-    """Run an interactive search session with natural language queries."""
-    print("🤖 AI-Powered Candidate Search")
-    print("Type 'exit' or press Ctrl+C to quit\n")
-    
-    search = AICandidateSearch()
-    
-    try:
-        while True:
-            try:
-                query = input("🔍 Search for candidates (e.g., 'senior python developer in Europe'): ")
-                
-                if query.lower() in ('exit', 'quit'):
-                    print("👋 Goodbye!")
-                    break
-                
-                print("\n🔍 Searching...")
-                results = search.search_candidates(query)
-                
-                print("\n" + "="*50)
-                print(search.format_results(results))
-                print("\n" + "="*50 + "\n")
-                
-            except KeyboardInterrupt:
-                print("\n👋 Goodbye!")
-                break
-            except Exception as e:
-                print(f"\n❌ Error: {str(e)}")
-                print("Please try a different search query.\n")
-                
-    except Exception as e:
-        print(f"\n❌ Fatal error: {str(e)}")
-        print("The application encountered an error and needs to close.")
-
-if __name__ == "__main__":
-    interactive_search()
