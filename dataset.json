@@ -1,0 +1,2901 @@
+[
+  {
+    "name": "John Davis",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "rag",
+      "agentic ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Bob Wilson",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "James Miller",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "agentic ai",
+      "langchain",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Olivia Moore",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Michael Johnson",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "langflow",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Emily Smith",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "llama index",
+      "langchain",
+      "generative-ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Emily Williams",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "langflow",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Sarah Doe",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Emily Jones",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langchain",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "William Moore",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "langflow",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Emily Brown",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Michael Miller",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "William Smith",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "langchain",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Emily Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "langchain",
+      "langflow",
+      "generative-ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Jane Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "llama index",
+      "rag",
+      "generative-ai",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Ava Davis",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "langchain",
+      "langflow",
+      "agentic ai",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Bob Wilson",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Michael Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "langflow",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "William Jones",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "William Doe",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "rag",
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Jane Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Jane Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "generative-ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Emily Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Olivia Moore",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Olivia Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "John Doe",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Sarah Doe",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "langflow",
+      "generative-ai",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Bob Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "llama index",
+      "generative-ai",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Emily Miller",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "James Williams",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "langflow",
+      "langchain",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Sarah Johnson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "rag",
+      "generative-ai",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Ava Doe",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Emily Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "agentic ai",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Jane Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Ava Doe",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "generative-ai",
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "John Jones",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "William Brown",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "generative-ai",
+      "agentic ai",
+      "llama index"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "William Davis",
+    "seniority": "junior",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Olivia Jones",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "llama index",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "William Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "llama index",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Olivia Jones",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "agentic ai",
+      "llama index"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "9+"
+  },
+  {
+    "name": "William Jones",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "James Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "generative-ai",
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "John Brown",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "langchain",
+      "agentic ai",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Emily Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "langflow",
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Bob Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "rag",
+      "llama index",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Ava Moore",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Ava Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "generative-ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "William Williams",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Olivia Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Bob Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "John Brown",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "langflow",
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "6+"
+  },
+  {
+    "name": "William Johnson",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Ava Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "langflow",
+      "agentic ai",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "William Jones",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "langchain",
+      "langflow"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Bob Wilson",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Ava Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Bob Smith",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "William Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "rag",
+      "langchain",
+      "generative-ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Jane Wilson",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Ava Williams",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "generative-ai",
+      "langchain",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Emily Smith",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Olivia Smith",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "rag",
+      "langflow",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Jane Doe",
+    "seniority": "junior",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Jones",
+    "seniority": "junior",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "agentic ai",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Sarah Miller",
+    "seniority": "junior",
+    "skills": [
+      "generative-ai",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Olivia Williams",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Emily Doe",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langflow",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Olivia Smith",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Jane Davis",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "llama index",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "John Miller",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "llama index",
+      "langchain",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "William Miller",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Olivia Johnson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Michael Wilson",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "llama index",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Olivia Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Michael Brown",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "rag",
+      "llama index",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Emily Miller",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "John Miller",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Michael Johnson",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "John Williams",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "John Jones",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "John Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Michael Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Michael Wilson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "langchain",
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Ava Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "llama index",
+      "langflow",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Jane Moore",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "langchain",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Ava Wilson",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "langflow",
+      "agentic ai",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Jane Johnson",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langflow",
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "William Wilson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Ava Doe",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "llama index",
+      "agentic ai",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Ava Brown",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "rag",
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Sarah Johnson",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "langchain",
+      "rag",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Sarah Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "agentic ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Emily Moore",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "agentic ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Ava Miller",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Williams",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "John Miller",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Sarah Davis",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "John Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Michael Smith",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "James Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "James Johnson",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "agentic ai",
+      "llama index",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "James Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "langflow",
+      "generative-ai",
+      "langchain"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Ava Brown",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Williams",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langflow",
+      "langchain",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Bob Johnson",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Olivia Jones",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "generative-ai",
+      "langchain",
+      "langflow"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Jane Johnson",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "James Brown",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "agentic ai",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Bob Moore",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "langflow",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Ava Miller",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "generative-ai",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "John Davis",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "William Miller",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "rag",
+      "generative-ai",
+      "llama index",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Sarah Williams",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Ava Wilson",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "William Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "llama index",
+      "agentic ai",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Michael Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Michael Moore",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Olivia Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "langchain",
+      "agentic ai",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Ava Jones",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Michael Johnson",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Olivia Johnson",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "langflow",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Sarah Brown",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "llama index",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Michael Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "agentic ai",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Bob Doe",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Ava Wilson",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "agentic ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Jane Smith",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "langchain",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "John Johnson",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "llama index",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "John Moore",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "James Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "James Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "John Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "langflow",
+      "llama index",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Michael Brown",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Sarah Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Emily Davis",
+    "seniority": "junior",
+    "skills": [
+      "langchain",
+      "generative-ai",
+      "langflow",
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Jane Wilson",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "John Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "langflow",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "James Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "James Miller",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "James Miller",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "langchain",
+      "generative-ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Bob Williams",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Olivia Wilson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Bob Smith",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Bob Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "rag",
+      "generative-ai",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Olivia Davis",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "llama index",
+      "langflow",
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "William Davis",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Sarah Doe",
+    "seniority": "junior",
+    "skills": [
+      "langflow",
+      "langchain",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Bob Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "langchain",
+      "generative-ai",
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Ava Wilson",
+    "seniority": "junior",
+    "skills": [
+      "rag",
+      "agentic ai",
+      "langchain",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Michael Brown",
+    "seniority": "junior",
+    "skills": [
+      "generative-ai",
+      "rag",
+      "llama index",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Michael Brown",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langchain",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Michael Wilson",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "rag",
+      "langchain",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "contract",
+    "experience_years": "9+"
+  },
+  {
+    "name": "John Moore",
+    "seniority": "junior",
+    "skills": [
+      "langchain",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "2+"
+  },
+  {
+    "name": "William Davis",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "generative-ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Michael Wilson",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "langflow",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Jane Miller",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "William Brown",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "John Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "4+"
+  },
+  {
+    "name": "William Johnson",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "agentic ai",
+      "generative-ai",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "James Jones",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "langflow",
+      "llama index",
+      "generative-ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "James Johnson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai",
+      "agentic ai",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "John Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "rag",
+      "agentic ai",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Sarah Moore",
+    "seniority": "senior",
+    "skills": [
+      "llama index",
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Emily Jones",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Michael Smith",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "langchain",
+      "llama index",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Jane Jones",
+    "seniority": "senior",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Emily Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "generative-ai",
+      "llama index",
+      "agentic ai",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Jane Smith",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "langflow",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Olivia Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "generative-ai",
+      "agentic ai",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Ava Jones",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "6+"
+  },
+  {
+    "name": "Sarah Johnson",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "llama index",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "Olivia Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "agentic ai",
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "William Williams",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Jane Doe",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "rag",
+      "generative-ai"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "Jane Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Michael Jones",
+    "seniority": "junior",
+    "skills": [
+      "langchain",
+      "langflow",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Olivia Davis",
+    "seniority": "junior",
+    "skills": [
+      "llama index",
+      "langflow"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "1+"
+  },
+  {
+    "name": "Ava Smith",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Jane Brown",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "langchain",
+      "rag",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "James Miller",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "7+"
+  },
+  {
+    "name": "Jane Davis",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "langchain",
+      "langflow"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "8+"
+  },
+  {
+    "name": "Olivia Williams",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Ava Jones",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "agentic ai"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Olivia Johnson",
+    "seniority": "senior",
+    "skills": [
+      "agentic ai",
+      "generative-ai",
+      "langflow",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "8+"
+  },
+  {
+    "name": "James Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "langflow",
+      "agentic ai",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Sarah Doe",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "James Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "langchain",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "4+"
+  },
+  {
+    "name": "Bob Davis",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "langchain"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "James Moore",
+    "seniority": "junior",
+    "skills": [
+      "agentic ai",
+      "llama index",
+      "langflow",
+      "rag"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "2+"
+  },
+  {
+    "name": "Michael Miller",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "rag",
+      "generative-ai",
+      "langflow",
+      "llama index"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "3+"
+  },
+  {
+    "name": "Ava Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "llama index",
+      "agentic ai"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "contract",
+    "experience_years": "5+"
+  },
+  {
+    "name": "John Wilson",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "Europe"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "7+"
+  },
+  {
+    "name": "John Brown",
+    "seniority": "midlevel",
+    "skills": [
+      "agentic ai",
+      "generative-ai",
+      "langflow"
+    ],
+    "location": [
+      "Asia"
+    ],
+    "employment_type": "full-time",
+    "experience_years": "3+"
+  },
+  {
+    "name": "John Jones",
+    "seniority": "senior",
+    "skills": [
+      "langflow",
+      "langchain",
+      "llama index"
+    ],
+    "location": [
+      "Africa"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "Bob Williams",
+    "seniority": "senior",
+    "skills": [
+      "generative-ai",
+      "llama index"
+    ],
+    "location": [
+      "North America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "10+"
+  },
+  {
+    "name": "John Moore",
+    "seniority": "midlevel",
+    "skills": [
+      "generative-ai",
+      "langflow",
+      "rag",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "5+"
+  },
+  {
+    "name": "James Williams",
+    "seniority": "senior",
+    "skills": [
+      "langchain",
+      "agentic ai",
+      "llama index",
+      "generative-ai",
+      "rag"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "part-time",
+    "experience_years": "9+"
+  },
+  {
+    "name": "James Doe",
+    "seniority": "midlevel",
+    "skills": [
+      "llama index",
+      "generative-ai",
+      "rag",
+      "agentic ai",
+      "langchain"
+    ],
+    "location": [
+      "South America"
+    ],
+    "employment_type": "contract",
+    "experience_years": "4+"
+  }
+]
