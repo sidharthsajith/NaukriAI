@@ -110,10 +110,14 @@ class CVAnalyzer:
             # Call Groq API and get the analysis
             analysis = self._call_groq_api(prompt)
             
+            # Generate interview questions
+            interview_questions = self._generate_interview_questions(cv_data)
+
             # Return the structured result
             return {
                 'status': 'success',
                 'analysis': analysis,
+                'suggested_interview_questions': interview_questions,
                 'metadata': {
                     'file_path': str(file_path),
                     'file_type': 'pdf' if str(file_path).lower().endswith('.pdf') else 'docx'
@@ -176,6 +180,36 @@ CV Content:
 """
         prompt += text_content[:15000]  # Limit to avoid token limits
         return prompt
+
+    def _generate_interview_questions(self, cv_data: Dict[str, Any]) -> List[str]:
+        """
+        Generate general interview questions based on CV content.
+
+        Args:
+            cv_data: Parsed CV data from DocumentParser
+
+        Returns:
+            List[str]: A list of suggested interview questions
+        """
+        text_content = cv_data.get('text', '')
+
+        prompt = f"""Based on the following CV content, generate 5-7 general interview questions. 
+The questions should help evaluate the candidate's overall suitability, covering aspects like their experience, 
+key skills, problem-solving abilities, and behavioral traits. 
+
+Format your response as a JSON object with a single key "interview_questions" which contains a list of strings (the questions).
+
+CV Content:
+{text_content[:4000]}
+"""
+
+        try:
+            response_json = self._call_groq_api(prompt)
+            return response_json.get("interview_questions", [])
+        except Exception as e:
+            # Log error or handle appropriately
+            print(f"Error generating interview questions: {e}")
+            return ["Could not generate interview questions at this time."]
 
 def main():
     parser = argparse.ArgumentParser(description='Analyze a CV using Groq LLM')

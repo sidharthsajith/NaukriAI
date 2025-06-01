@@ -156,7 +156,7 @@ class AdvancedCandidateMatcher:
         
         try:
             response = self.client.chat.completions.create(
-                model="mixtral-8x7b-32768",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "system", "content": "You are a helpful career advisor providing skill gap analysis."},
                     {"role": "user", "content": prompt}
@@ -212,7 +212,7 @@ class AdvancedCandidateMatcher:
         
         try:
             response = self.client.chat.completions.create(
-                model="mixtral-8x7b-32768",
+                model="llama-3.3-70b-versatile",
                 messages=[
                     {"role": "system", "content": "You are an experienced technical interviewer."},
                     {"role": "user", "content": prompt}

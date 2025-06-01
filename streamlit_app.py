@@ -11,6 +11,13 @@ import os
 from pathlib import Path
 import time
 
+# Set page config first (must be the first Streamlit command)
+st.set_page_config(
+    page_title="NaukriAI Dashboard",
+    page_icon="🚀",
+    layout="wide"
+)
+
 # Import local modules
 from cv_analyser import CVAnalyzer
 from groq_search import AICandidateSearch
@@ -50,18 +57,60 @@ def get_skills_by_seniority(df: pd.DataFrame, seniority: str) -> pd.DataFrame:
 
 # Function to load local CSS
 
-# Function to load local CSS
 def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 def setup_page():
-    # Page Configuration (must be the first Streamlit command)
-    st.set_page_config(
-        page_title="NaukriAI Dashboard",
-        page_icon="🚀", # You can use an emoji or a path to an .ico file
-        layout="wide", # Can be "centered" or "wide"
-        initial_sidebar_state="expanded" # Can be "auto", "expanded", "collapsed"
+    # Apply custom CSS
+    st.markdown(
+        """
+        <style>
+            .main {
+                padding: 2rem;
+            }
+            .stButton>button {
+                width: 100%;
+                border-radius: 20px;
+                font-weight: bold;
+            }
+            .stTextInput>div>div>input {
+                border-radius: 20px;
+            }
+            .stSelectbox>div>div {
+                border-radius: 20px;
+            }
+            .stTextArea>div>div>textarea {
+                border-radius: 10px;
+            }
+            .stFileUploader>div>div {
+                border-radius: 10px;
+                border: 1px dashed #4a4a4a;
+                padding: 1rem;
+            }
+            .stProgress>div>div>div>div {
+                background-color: #4a4aff;
+            }
+            .st-bb {
+                background-color: transparent;
+            }
+            .st-at {
+                background-color: #4a4aff;
+            }
+            .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: white;
+                color: black;
+                text-align: center;
+                padding: 10px 0;
+                border-top: 1px solid #e6e6e6;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
     )
 
 def load_env():
@@ -70,6 +119,7 @@ def load_env():
     load_dotenv()
 
 def main():
+    setup_page()
     # Load data
     df = load_data()
     
@@ -830,35 +880,15 @@ def display_ai_candidate_search():
                     if st.button("📅 Schedule Interview", use_container_width=True):
                         st.info("Interview scheduling coming soon!")
 
-    load_env()
-    
-    # Setup page configuration
-    setup_page()
-    
-    # Sidebar navigation
-    st.sidebar.title("NaukriAI")
-    app_mode = st.sidebar.radio(
-        "Navigation",
-        ["🏠 Home", "🔍 CV Analyzer", "🤖 AI Candidate Search", "🎯 Advanced Matching", "✉️ Outreach"],
-        index=0
-    )
-    
-    # Update app mode based on navigation
-    st.session_state.app_mode = app_mode
-    
-    # Route to the selected page
-    if app_mode == "🏠 Home":
-        show_home()
-    elif app_mode == "🔍 CV Analyzer":
-        show_cv_analyser()
-    elif app_mode == "🤖 AI Candidate Search":
-        display_ai_candidate_search()
-    elif app_mode == "🎯 Advanced Matching":
-        show_advanced_matching()
-    elif app_mode == "✉️ Outreach":
-        show_outreach_system()
-    else:
-        show_home()
+    # This function should only contain AI candidate search functionality
+    # Navigation is handled in main_app()
+    st.title("🤖 AI Candidate Search")
+    st.markdown("""
+    Use natural language to search for candidates. For example:
+    - "Find senior Python developers with 5+ years of experience"
+    - "Show me entry-level data scientists with machine learning skills"
+    - "Find candidates with React and Node.js experience"
+    """)
 
 def show_home():
     df = load_data()
@@ -1459,31 +1489,31 @@ def show_advanced_matching():
         col1, col2 = st.columns(2)
         
         with col1:
-            job_title = st.text_input("Job Title", "Senior Software Engineer")
+            job_title = st.text_input("Job Title", "Cloud Solutions Architect")
             required_skills = st.text_area(
                 "Required Skills (comma-separated)", 
-                "python, machine learning, data analysis"
+                "aws, azure"
             )
             preferred_skills = st.text_area(
                 "Preferred Skills (comma-separated)", 
-                "docker, kubernetes, aws"
+                "cloud computing, devops"
             )
         
         with col2:
             seniority = st.selectbox(
                 "Seniority Level",
                 ["", "junior", "midlevel", "senior"],
-                index=2
+                index=3  # Changed to 'senior'
             )
             experience_years = st.selectbox(
                 "Minimum Experience",
                 ["", "0-2", "3-5", "5-10", "10+"],
-                index=3
+                index=4  # Changed to '10+'
             )
             employment_type = st.selectbox(
                 "Employment Type",
                 ["", "full-time", "part-time", "contract"],
-                index=1
+                index=1  # 'full-time' is already index 1
             )
         
         job_description = st.text_area(
@@ -1547,8 +1577,9 @@ def show_advanced_matching():
                         if hasattr(candidate, 'skill_gap_analysis') and candidate.skill_gap_analysis:
                             st.markdown("**Skill Gap Analysis:**")
                             for skill, analysis in candidate.skill_gap_analysis.items():
-                                with st.expander(f"Analysis for {skill}"):
-                                    st.write(analysis)
+                                # Removed nested expander to prevent StreamlitAPIException
+                                st.markdown(f"**_Analysis for {skill}:_**") 
+                                st.write(analysis)
                         
                         # Show interview questions
                         if hasattr(candidate, 'interview_questions') and candidate.interview_questions:
@@ -1578,6 +1609,42 @@ def show_advanced_matching():
                 st.error(f"An error occurred: {str(e)}")
                 import traceback
                 st.text(traceback.format_exc())
+
+def main_app():
+    """Main application function."""
+    # Load environment variables
+    load_env()
+    
+    # Setup page configuration (without set_page_config)
+    setup_page()
+    
+    # Initialize session state for app mode if it doesn't exist
+    if 'app_mode' not in st.session_state:
+        st.session_state.app_mode = "🏠 Home"
+    
+    # Sidebar navigation with unique key
+    with st.sidebar:
+        st.title("NaukriAI")
+        st.session_state.app_mode = st.radio(
+            "Navigation",
+            ["🏠 Home", "🔍 CV Analyzer", "🤖 AI Candidate Search", "🎯 Advanced Matching", "✉️ Outreach"],
+            index=0,
+            key="main_navigation"
+        )
+    
+    # Route to the selected page
+    if st.session_state.app_mode == "🏠 Home":
+        show_home()
+    elif st.session_state.app_mode == "🔍 CV Analyzer":
+        show_cv_analyser()
+    elif st.session_state.app_mode == "🤖 AI Candidate Search":
+        display_ai_candidate_search()
+    elif st.session_state.app_mode == "🎯 Advanced Matching":
+        show_advanced_matching()
+    elif st.session_state.app_mode == "✉️ Outreach":
+        show_outreach_system()
+    else:
+        show_home()
 
 if __name__ == "__main__":
     main_app()
