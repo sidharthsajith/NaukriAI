@@ -8,14 +8,11 @@ try:
     import PyPDF2
     from docx import Document
     from docx.opc.exceptions import PackageNotFoundError
-except ImportError:
-    print("Required packages not found. Installing...")
-    import subprocess
-    import sys
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "PyPDF2", "python-docx"])
-    import PyPDF2
-    from docx import Document
-    from docx.opc.exceptions import PackageNotFoundError
+except ImportError as e:
+    raise ImportError(
+        "Required packages PyPDF2 and python-docx are not installed. "
+        "Please install them using 'pip install -r requirements.txt' before running this application."
+    ) from e
 
 
 class DocumentParser:
