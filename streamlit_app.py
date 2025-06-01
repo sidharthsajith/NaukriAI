@@ -830,34 +830,33 @@ def display_ai_candidate_search():
                     if st.button("📅 Schedule Interview", use_container_width=True):
                         st.info("Interview scheduling coming soon!")
 
-def main_app():
-    setup_page()
     load_env()
     
+    # Setup page configuration
+    setup_page()
     
-    # Initialize session state for app mode if it doesn't exist
-    if 'app_mode' not in st.session_state:
-        st.session_state.app_mode = "Home"
-    
-    # Navigation
-    page = st.sidebar.radio(
+    # Sidebar navigation
+    st.sidebar.title("NaukriAI")
+    app_mode = st.sidebar.radio(
         "Navigation",
-        ["Home", "CV Analyzer", "AI Candidate Search", "Advanced Matching"],
-        index=0,
+        ["🏠 Home", "🔍 CV Analyzer", "🤖 AI Candidate Search", "🎯 Advanced Matching", "✉️ Outreach"],
+        index=0
     )
     
     # Update app mode based on navigation
-    st.session_state.app_mode = page
+    st.session_state.app_mode = app_mode
     
     # Route to the selected page
-    if st.session_state.app_mode == "Home":
+    if app_mode == "🏠 Home":
         show_home()
-    elif st.session_state.app_mode == "CV Analyzer":
+    elif app_mode == "🔍 CV Analyzer":
         show_cv_analyser()
-    elif st.session_state.app_mode == "AI Candidate Search":
+    elif app_mode == "🤖 AI Candidate Search":
         display_ai_candidate_search()
-    elif st.session_state.app_mode == "Advanced Matching":
+    elif app_mode == "🎯 Advanced Matching":
         show_advanced_matching()
+    elif app_mode == "✉️ Outreach":
+        show_outreach_system()
     else:
         show_home()
 
@@ -1335,12 +1334,123 @@ def show_cv_analyser():
             except Exception as e:
                 st.warning(f"Warning: Could not delete temporary file: {str(e)}")
 
+def show_outreach_system():
+    """Display the personalized outreach message generation interface."""
+    st.title("🤝 Personalized Outreach System")
+    st.markdown("""
+    Generate personalized outreach messages for candidates based on their profiles and your job requirements.
+    Upload a candidate's CV and fill in the details to create a tailored message.
+    """)
+    
+    # File uploader for CV
+    uploaded_file = st.file_uploader("Upload Candidate's CV (PDF or DOCX)", type=['pdf', 'docx'])
+    
+    # Form for job and company details
+    with st.form("outreach_details"):
+        st.subheader("Job & Company Details")
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            recruiter_name = st.text_input("Your Name")
+            company_name = st.text_input("Company Name")
+            job_title = st.text_input("Job Title")
+            
+        with col2:
+            hiring_manager = st.text_input("Hiring Manager's Name (optional)")
+            salary_range = st.text_input("Salary Range (optional)")
+            work_location = st.text_input("Work Location")
+        
+        # Additional details
+        key_requirements = st.text_area("Key Requirements (one per line)", 
+                                     help="List the key requirements for the position")
+        
+        # Tone and style
+        tone = st.selectbox("Message Tone", 
+                          ["Professional", "Friendly", "Enthusiastic", "Formal"],
+                          index=0)
+        
+        submitted = st.form_submit_button("Generate Outreach Message")
+    
+    # Generate and display the outreach message
+    if submitted and uploaded_file is not None:
+        with st.spinner("Analyzing CV and generating personalized message..."):
+            # Here you would typically analyze the CV and generate a message
+            # For now, we'll use a template-based approach
+            
+            # Simulate CV analysis (in a real app, you'd use your CV analysis logic here)
+            candidate_name = "[Candidate Name]"
+            relevant_skills = ["Python", "Machine Learning", "Data Analysis"]  # Example skills
+            
+            # Generate the message
+            message = f"""
+**Subject:** Exciting Opportunity: {job_title} at {company_name}
+
+Dear {candidate_name},
+
+I hope this message finds you well. My name is {recruiter_name}, and I'm a recruiter at {company_name}. """
+            
+            if hiring_manager:
+                message += f"{hiring_manager}, our {job_title.split('(')[0].strip()}, and I "
+            else:
+                message += "I "
+                
+            message += f"came across your profile and were impressed by your experience with {', '.join(relevant_skills[:2])}."
+            
+            message += f"""
+
+We're currently looking for a {job_title} to join our team in {work_location}. The role involves working on exciting projects in [brief description of work].
+
+**Why {company_name}?**
+- [Company achievement or unique aspect 1]
+- [Company achievement or unique aspect 2]
+- [Company achievement or unique aspect 3]
+
+**Key Requirements:**
+"""
+            
+            # Add key requirements
+            requirements = [req.strip() for req in key_requirements.split('\n') if req.strip()]
+            for req in requirements:
+                message += f"- {req}\n"
+            
+            message += f"""
+
+Your background in [specific experience/skill] particularly caught our attention as it aligns well with what we're looking for.
+
+We'd love to schedule a quick call to discuss this opportunity further and share more about the role. Would you be available for a 15-20 minute chat this week?
+
+Best regards,
+{recruiter_name}
+{company_name}
+[Your Contact Information]"""
+            
+            # Display the generated message
+            st.subheader("Generated Outreach Message")
+            st.markdown("---")
+            st.markdown(message)
+            st.markdown("---")
+            
+            # Action buttons
+            col1, col2, col3 = st.columns([1,1,3])
+            with col1:
+                st.download_button("📄 Download Message", 
+                                 data=message, 
+                                 file_name=f"outreach_{candidate_name.replace(' ', '_')}.txt",
+                                 mime="text/plain")
+            with col2:
+                if st.button("📧 Copy to Clipboard"):
+                    st.session_state.copied = True
+                    st.experimental_rerun()
+            
+            if st.button("🔄 Regenerate Message"):
+                st.experimental_rerun()
+
 def show_advanced_matching():
     """Display the advanced candidate matching interface."""
     st.title("🔍 Advanced Candidate Matching")
-    st.write("""
-    Use this tool to find the best candidates based on job requirements.
-    The system will analyze skills, experience, and provide interview questions.
+    st.markdown("""
+    Use this tool to find the best candidates for your job requirements.
+    The system will analyze candidate profiles and match them based on skills, experience, and other criteria.
     """)
     
     with st.form("job_requirements"):
