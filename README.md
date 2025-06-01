@@ -24,23 +24,34 @@ NaukriAI is an AI-powered talent search and management platform designed to revo
 - Current Status: Basic implementation completed with Groq integration for natural language search
 
 ### 3. Advanced Candidate Matching System
-- Planned 📋
+- Implemented ✅
 - Description: AI-powered system that goes beyond basic parsing to deeply understand candidate qualifications and match them with job requirements using semantic search and skill gap analysis.
-- Future Work:
+- Features:
   - Semantic understanding of job descriptions
   - Skill gap analysis between candidates and job requirements
-  - Compatibility scoring based on company culture and team fit
-  - Integration with existing ATS systems
+  - Compatibility scoring based on multiple factors
+  - Detailed scoring breakdown for each candidate
+  - AI-generated interview questions based on profile gaps
+  - Support for required and preferred skills weighting
 
 ### 4. Candidate Ranking and Scoring System
-- Planned 📋
-- Description: Intelligent scoring system that ranks candidates based on recruiter-defined criteria, including skill match, experience, and cultural fit.
-- Future Work: Development of scoring algorithms and criteria weighting system
+- Implemented ✅
+- Description: Intelligent scoring system that ranks candidates based on recruiter-defined criteria, including skill match, experience, and other relevant factors.
+- Features:
+  - Customizable scoring weights for different criteria
+  - Detailed scoring breakdown for each candidate
+  - Support for filtering by seniority, location, and employment type
+  - Configurable number of top candidates to return
 
-### 5. AI-Powered Background Checking and Pre-Screening
-- Planned 📋
-- Description: Automated background verification and pre-screening process with AI-generated interview questions based on candidate profiles.
-- Future Work: Implementation of background checking system and Q&A generation engine
+### 5. AI-Powered Pre-Screening
+- Partially Implemented ✅
+- Description: Automated pre-screening with AI-generated interview questions based on candidate profiles and identified skill gaps.
+- Current Features:
+  - AI-generated interview questions based on profile gaps
+  - Structured question generation focusing on missing skills
+- Future Work:
+  - Integration with background verification services
+  - Automated response analysis
 
 ### 6. Talent-Pool Insights Dashboards
 - Planned 📋
@@ -63,10 +74,26 @@ The CV Analyzer provides comprehensive resume analysis with the following capabi
 
 ### PeopleGPT Search Engine
 The PeopleGPT search engine allows natural language search across candidate profiles:
-1. Understands natural language search queries
-2. Analyzes candidate profiles based on predefined schema
-3. Returns relevant candidates with matching criteria
-4. Formats results in a readable, structured format
+- Understands natural language search queries
+- Analyzes candidate profiles based on predefined schema
+- Returns relevant candidates with matching criteria
+- Formats results in a readable, structured format
+
+### Advanced Candidate Matching
+Our advanced matching system provides intelligent candidate-job matching:
+- **Smart Scoring**: Rates candidates based on skill matches and gaps
+- **Customizable Weights**: Adjust importance of required vs preferred skills
+- **Detailed Analysis**: Provides breakdown of matching skills and missing qualifications
+- **AI-Generated Questions**: Creates targeted interview questions based on profile gaps
+- **Flexible Filtering**: Filter by seniority, location, employment type, and experience
+
+### Candidate Ranking System
+The ranking system evaluates candidates based on multiple dimensions:
+- **Skill Match Score**: How well the candidate's skills match the job requirements
+- **Experience Level**: Years of relevant experience
+- **Education**: Relevant degrees and certifications
+- **Employment History**: Career progression and role relevance
+- **Custom Weights**: Recruiters can adjust the importance of each factor
 
 ## Getting Started
 
@@ -75,7 +102,7 @@ The PeopleGPT search engine allows natural language search across candidate prof
 - Groq API Key (Get one from [Groq Cloud](https://console.groq.com/))
 - Required packages:
   ```bash
-  pip install groq python-dotenv PyPDF2 python-docx
+  pip install groq python-dotenv PyPDF2 python-docx streamlit pandas plotly
   ```
 
 ### Installation
@@ -98,15 +125,41 @@ python cv_analyser.py path/to/resume.pdf --output analysis.json
 python cv_analyser.py path/to/resume.pdf --api-key your_api_key_here
 ```
 
-#### PeopleGPT Search Engine
+#### Advanced Features
+To launch the complete application with all features:
+```bash
+streamlit run streamlit_app.py
+```
+
+##### PeopleGPT Search Engine
 ```bash
 python groq_search.py
 ```
 
-The system will prompt you to enter search queries. You can use natural language queries like:
+Natural language search examples:
 - "Find senior developers with experience in Python"
 - "Candidates with 5+ years experience in AI/ML"
 - "Junior developers with skills in React or Angular"
+
+##### Advanced Candidate Matching
+Use the Streamlit interface to:
+1. Upload job requirements or enter them manually
+2. Set skill weights (required vs preferred)
+3. Filter candidates by seniority, location, and employment type
+4. View detailed matching reports and AI-generated interview questions
+
+For programmatic use:
+```python
+from advanced_matching import AdvancedCandidateMatcher
+
+matcher = AdvancedCandidateMatcher('dataset.json')
+matches = matcher.match_candidates(
+    required_skills=['Python', 'Machine Learning'],
+    preferred_skills=['TensorFlow', 'PyTorch'],
+    seniority='Senior',
+    top_n=5
+)
+```
 
 ## Future Development Roadmap
 1. Enhance CV Analyzer with more detailed skills assessment

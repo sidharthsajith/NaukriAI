@@ -4,18 +4,17 @@ import pandas as pd
 import json
 import plotly.express as px
 from collections import Counter
-from typing import List, Dict, Any, Optional, Union
+from typing import List, Dict, Any, Optional
 import numpy as np
 import tempfile
 import os
-import datetime
 from pathlib import Path
+import time
+
+# Import local modules
 from cv_analyser import CVAnalyzer
 from groq_search import AICandidateSearch
-from ai_matching import AdvancedCandidateMatcher, CandidateRanker, BackgroundChecker
-import time
-import asyncio
-from dataclasses import asdict
+from advanced_matching import AdvancedCandidateMatcher, ScoredCandidate
 
 # Load the dataset
 @st.cache_data
@@ -835,39 +834,30 @@ def main_app():
     setup_page()
     load_env()
     
-    # Load custom CSS
-    local_css("static/style.css")
     
     # Initialize session state for app mode if it doesn't exist
     if 'app_mode' not in st.session_state:
         st.session_state.app_mode = "Home"
     
-    # --- Sidebar ---
-    st.sidebar.title("NaukriAI Controls")
-    st.sidebar.header("Navigation")
-    
-    # Update app mode based on user selection
-    new_app_mode = st.sidebar.selectbox(
-        "Choose a feature:",
-        ["Home", "CV Analyser", "Market Insights", "AI Candidate Search", "AI Matching & Ranking", "Background Check"],
-        index=["Home", "CV Analyser", "Market Insights", "AI Candidate Search", "AI Matching & Ranking", "Background Check"].index(st.session_state.app_mode)
+    # Navigation
+    page = st.sidebar.radio(
+        "Navigation",
+        ["Home", "CV Analyzer", "AI Candidate Search", "Advanced Matching"],
+        index=0,
     )
     
-    if new_app_mode != st.session_state.app_mode:
-        st.session_state.app_mode = new_app_mode
-        st.rerun()
+    # Update app mode based on navigation
+    st.session_state.app_mode = page
     
     # Route to the selected page
     if st.session_state.app_mode == "Home":
         show_home()
-    elif st.session_state.app_mode == "CV Analyser":
+    elif st.session_state.app_mode == "CV Analyzer":
         show_cv_analyser()
     elif st.session_state.app_mode == "AI Candidate Search":
         display_ai_candidate_search()
-    elif st.session_state.app_mode == "AI Matching & Ranking":
-        show_ai_matching_ranking()
-    elif st.session_state.app_mode == "Background Check":
-        show_background_check()
+    elif st.session_state.app_mode == "Advanced Matching":
+        show_advanced_matching()
     else:
         show_home()
 
@@ -1046,6 +1036,27 @@ def show_cv_analyser():
                         else:
                             st.info("📉 May require significant experience or skill development")
                 
+                # Display overall assessment and recommendation if available
+                if 'overall_assessment' in analysis:
+                    with st.expander("📝 Overall Assessment"):
+                        st.write(analysis['overall_assessment'])
+                
+                # Display recommendation
+                if 'recommendation' in analysis:
+                    with st.expander("✅ Recommendation"):
+                        rec = analysis['recommendation']
+                        st.write(f"**Recommended:** {'✅ Yes' if rec.get('recommended', False) else '❌ No'}")
+                        st.write(f"**Reasoning:** {rec.get('reasoning', 'N/A')}")
+                        
+                        if 'suggested_roles' in rec and rec['suggested_roles']:
+                            st.write("**Suggested Roles:**")
+                            for role in rec['suggested_roles']:
+                                st.write(f"- {role}")
+                        
+                        if 'suggested_compensation_range' in rec:
+                            comp = rec['suggested_compensation_range']
+                            st.write(f"**Suggested Compensation:** {comp.get('currency', 'USD')} {comp.get('min', 'N/A')} - {comp.get('max', 'N/A')}")
+                
                 st.markdown("---")
                 
                 # Candidate Snapshot
@@ -1075,36 +1086,84 @@ def show_cv_analyser():
                 st.markdown("---")
                 st.subheader("💼 Core Competencies")
                 
-                if 'skills' in analysis and analysis['skills']:
-                    skills = analysis['skills']
-                    
+                # Get skills from candidate_summary if available
+                candidate_skills = []
+                if 'candidate_summary' in analysis and 'key_skills' in analysis['candidate_summary']:
+                    candidate_skills = analysis['candidate_summary']['key_skills']
+                
+                # Fall back to top-level skills if not in candidate_summary
+                if not candidate_skills and 'skills' in analysis and analysis['skills']:
+                    candidate_skills = analysis['skills']
+                
+                if candidate_skills:
                     # Categorize skills
-                    tech_skills = [s for s in skills if any(tech in s.lower() for tech in ['python', 'java', 'c++', 'javascript', 'sql', 'cloud', 'aws', 'azure', 'docker', 'kubernetes', 'ml', 'ai', 'data'])]
-                    soft_skills = [s for s in skills if s.lower() in ['leadership', 'communication', 'teamwork', 'problem solving', 'time management', 'adaptability']]
+                    tech_skills = [s for s in candidate_skills if any(tech in str(s).lower() for tech in ['python', 'java', 'c++', 'javascript', 'sql', 'cloud', 'aws', 'azure', 'docker', 'kubernetes', 'ml', 'ai', 'data', 'artificial intelligence', 'machine learning', 'deep learning', 'nlp'])]
+                    soft_skills = [s for s in candidate_skills if str(s).lower() in ['leadership', 'communication', 'teamwork', 'problem solving', 'time management', 'adaptability', 'analytical thinking', 'creativity']]
                     
                     col1, col2 = st.columns(2)
                     with col1:
                         st.markdown("##### 🛠️ Technical Skills")
-                        for skill in tech_skills[:8]:  # Show top 8 technical skills
+                        for skill in tech_skills[:10]:  # Show top 10 technical skills
                             st.markdown(f"- {skill}")
                     with col2:
                         st.markdown("##### 🤝 Soft Skills")
-                        for skill in soft_skills or ["Not explicitly mentioned"]:
-                            st.markdown(f"- {skill}")
+                        if soft_skills:
+                            for skill in soft_skills:
+                                st.markdown(f"- {skill}")
+                        else:
+                            st.markdown("Not explicitly mentioned")
+                
+                # Strengths and Development Areas
+                st.markdown("---")
+                st.subheader("🌟 Key Strengths")
+                
+                # Get strengths from analysis
+                strengths = []
+                if 'strengths' in analysis and analysis['strengths']:
+                    strengths = analysis['strengths']
+                
+                if strengths:
+                    for strength in strengths:
+                        st.markdown(f"✅ {strength}")
+                else:
+                    st.info("No specific strengths identified in the CV.")
+                
+                # Development Areas
+                st.markdown("---")
+                st.subheader("📈 Development Areas")
+                
+                # Get development areas from red_flags or other fields
+                development_areas = []
+                if 'red_flags' in analysis and analysis['red_flags']:
+                    development_areas = analysis['red_flags']
+                
+                if development_areas:
+                    for area in development_areas:
+                        st.markdown(f"🔧 {area}")
+                else:
+                    st.info("No specific development areas identified.")
                 
                 # Work Experience Analysis
                 st.markdown("---")
-                st.subheader("📈 Work Experience Analysis")
+                st.subheader("💼 Work Experience Analysis")
                 
                 # Try to extract experience from different possible fields
                 experience_data = []
                 
                 # Check standard experience field first
-                if 'experience' in analysis:
+                if 'experience' in analysis and analysis['experience']:
                     experience_data = analysis['experience']
                 # Check if experience is in candidate_summary
                 elif 'candidate_summary' in analysis and 'experience' in analysis['candidate_summary']:
-                    experience_data = analysis['candidate_summary']['experience']
+                    exp = analysis['candidate_summary'].get('experience')
+                    if isinstance(exp, str):
+                        # If experience is a string, convert it to a list of dictionaries
+                        experience_data = [{'details': exp}]
+                    elif isinstance(exp, list):
+                        experience_data = exp
+                # Check if experience is in work_experience
+                elif 'work_experience' in analysis and analysis['work_experience']:
+                    experience_data = analysis['work_experience']
                 # Check if experience is embedded in the text
                 elif 'text' in analysis:
                     # Try to extract experience from raw text (simplified example)
@@ -1122,37 +1181,52 @@ def show_cv_analyser():
                 
                 if experience_data:
                     for idx, job in enumerate(experience_data[:3]):  # Show top 3 experiences
-                        with st.expander(f"{job.get('title', 'Role')} at {job.get('company', 'Company')} ({job.get('duration', 'N/A')})"):
-                            # Display role and company if available
-                            if 'title' in job or 'company' in job:
-                                st.markdown(f"**Role:** {job.get('title', 'Not specified')}")
-                                st.markdown(f"**Company:** {job.get('company', 'Not specified')}")
-                            
-                            # Display duration if available
+                        # Handle different job data formats
+                        if isinstance(job, str):
+                            with st.expander(f"Experience {idx + 1}"):
+                                st.markdown(job)
+                        elif isinstance(job, dict):
+                            # Create a title for the expander
+                            title_parts = []
+                            if 'title' in job:
+                                title_parts.append(job['title'])
+                            if 'company' in job:
+                                title_parts.append(f"at {job['company']}")
                             if 'duration' in job:
-                                st.markdown(f"**Duration:** {job['duration']}")
+                                title_parts.append(f"({job['duration']})")
                             
-                            # Display responsibilities
-                            st.markdown("**Key Responsibilities:**")
-                            if 'responsibilities' in job and job['responsibilities']:
-                                for resp in job['responsibilities'][:5]:  # Show top 5 responsibilities
-                                    st.markdown(f"- {resp}")
-                            elif 'details' in job:
-                                # Try to extract bullet points from details
-                                details = job['details'].split('\n')
-                                for detail in details[:5]:  # Show top 5 details
-                                    if detail.strip():
-                                        st.markdown(f"- {detail.strip()}")
-                            else:
-                                st.markdown("- No specific responsibilities mentioned")
+                            expander_title = " ".join(title_parts) if title_parts else f"Experience {idx + 1}"
                             
-                            # Display achievements if available
-                            if 'achievements' in job and job['achievements']:
-                                st.markdown("**Key Achievements:**")
-                                for ach in job['achievements'][:3]:  # Show top 3 achievements
-                                    st.markdown(f"- ✅ {ach}")
+                            with st.expander(expander_title):
+                                # Display role and company if available
+                                if 'title' in job or 'company' in job:
+                                    st.markdown(f"**Role:** {job.get('title', 'Not specified')}")
+                                    st.markdown(f"**Company:** {job.get('company', 'Not specified')}")
+                                
+                                # Display duration if available
+                                if 'duration' in job:
+                                    st.markdown(f"**Duration:** {job['duration']}")
+                                
+                                # Display details or responsibilities
+                                if 'details' in job:
+                                    st.markdown("**Details:**")
+                                    st.markdown(job['details'])
+                                elif 'responsibilities' in job and job['responsibilities']:
+                                    st.markdown("**Key Responsibilities:**")
+                                    if isinstance(job['responsibilities'], list):
+                                        for resp in job['responsibilities']:
+                                            st.markdown(f"- {resp}")
+                                    else:
+                                        st.markdown(job['responsibilities'])
                 else:
-                    st.warning("No detailed work experience found in the CV. Here's what we found in the text:")
+                    st.info("No detailed work experience found in the CV. Here's what we found in the text:")
+                    if 'text' in analysis and len(analysis['text']) > 0:
+                        # Show first 500 characters of the text as a fallback
+                        preview_text = analysis['text'][:500] + '...' if len(analysis['text']) > 500 else analysis['text']
+                        st.text(preview_text)
+                    else:
+                        st.warning("No work experience information could be extracted from the CV.")
+                    
                     # Show raw text analysis as fallback
                     if 'text' in analysis:
                         text = analysis['text']
@@ -1220,12 +1294,31 @@ def show_cv_analyser():
                         st.markdown("No specific interview focus areas identified")
                     
                     st.markdown("#### 📝 Additional Notes")
-                    if 'notes' in analysis and analysis['notes']:
-                        st.markdown(analysis['notes'])
-                    else:
-                        st.markdown("No additional notes available")
                 
-                # Raw JSON (for debugging)
+                # Salary Benchmark
+                st.markdown("##### 💰 Salary Benchmark")
+                if 'recommendation' in analysis and 'suggested_compensation_range' in analysis['recommendation']:
+                    comp = analysis['recommendation']['suggested_compensation_range']
+                    st.markdown(f"Range: {comp.get('currency', 'USD')} {comp.get('min', 'N/A')} - {comp.get('max', 'N/A')} per year")
+                else:
+                    st.info("Salary benchmark not available")
+                
+                # Interview Focus Areas
+                st.markdown("##### 📋 Interview Focus Areas")
+                if 'red_flags' in analysis and analysis['red_flags']:
+                    for flag in analysis['red_flags']:
+                        st.markdown(f"- Explore: {flag}")
+                else:
+                    st.info("No specific focus areas identified. Consider standard technical and behavioral questions.")
+                
+                # Additional Notes
+                st.markdown("##### 📝 Additional Notes")
+                if 'additional_notes' in analysis and analysis['additional_notes']:
+                    st.write(analysis['additional_notes'])
+                else:
+                    st.info("No additional notes available")
+                
+                # Display raw analysis in an expander
                 with st.expander("View Raw Analysis"):
                     st.json(analysis)
             
@@ -1242,458 +1335,139 @@ def show_cv_analyser():
             except Exception as e:
                 st.warning(f"Warning: Could not delete temporary file: {str(e)}")
 
-if __name__ == "__main__":
-    main_app()
-
-def show_ai_matching_ranking():
-    """Display the AI Matching & Ranking interface"""
-    st.title("🤖 AI-Powered Candidate Matching & Ranking")
-    st.markdown("""
-    Use AI to find and rank the best candidates based on job requirements.
-    The system analyzes skills, experience, seniority, and cultural fit.
+def show_advanced_matching():
+    """Display the advanced candidate matching interface."""
+    st.title("🔍 Advanced Candidate Matching")
+    st.write("""
+    Use this tool to find the best candidates based on job requirements.
+    The system will analyze skills, experience, and provide interview questions.
     """)
-    
-    # Initialize session state for form data
-    if 'job_description' not in st.session_state:
-        st.session_state.job_description = ""
-    if 'required_skills' not in st.session_state:
-        st.session_state.required_skills = []
-    if 'seniority' not in st.session_state:
-        st.session_state.seniority = ""
-    if 'experience_years' not in st.session_state:
-        st.session_state.experience_years = ""
-    if 'employment_type' not in st.session_state:
-        st.session_state.employment_type = ""
-    if 'locations' not in st.session_state:
-        st.session_state.locations = []
     
     with st.form("job_requirements"):
         st.subheader("Job Requirements")
         
-        # Job description
-        job_desc = st.text_area(
-            "Job Description",
-            value=st.session_state.job_description,
-            help="Enter a detailed job description"
-        )
-        
-        # Skills input
-        skills_input = st.text_input(
-            "Required Skills (comma separated)",
-            value=", ".join(st.session_state.required_skills),
-            help="Enter skills separated by commas"
-        )
-        
-        # Other fields
-        col1, col2, col3 = st.columns(3)
-        with col1:
-            seniority = st.selectbox(
-                "Seniority Level",
-                ["", "Junior", "Mid-Level", "Senior"],
-                index=["", "Junior", "Mid-Level", "Senior"].index(st.session_state.seniority) if st.session_state.seniority else 0
-            )
-        
-        with col2:
-            experience = st.selectbox(
-                "Years of Experience",
-                ["", "1-3", "3-5", "5-10", "10+", "15+"],
-                index=["", "1-3", "3-5", "5-10", "10+", "15+"].index(st.session_state.experience_years) if st.session_state.experience_years else 0
-            )
-        
-        with col3:
-            emp_type = st.selectbox(
-                "Employment Type",
-                ["", "Full-time", "Part-time", "Contract", "Remote"],
-                index=["", "Full-time", "Part-time", "Contract", "Remote"].index(st.session_state.employment_type) if st.session_state.employment_type else 0
-            )
-        
-        # Locations
-        locations = st.multiselect(
-            "Preferred Locations",
-            ["North America", "Europe", "Asia", "South America", "Africa", "Australia", "Remote"],
-            default=st.session_state.locations
-        )
-        
-        # Submit button
-        submitted = st.form_submit_button("Find & Rank Candidates")
-        
-        if submitted:
-            # Update session state
-            st.session_state.job_description = job_desc
-            st.session_state.required_skills = [s.strip() for s in skills_input.split(",") if s.strip()]
-            st.session_state.seniority = seniority
-            st.session_state.experience_years = experience
-            st.session_state.employment_type = emp_type
-            st.session_state.locations = locations
-            
-            # Process the form
-            process_matching_form(job_desc, st.session_state.required_skills, seniority, 
-                                experience, emp_type, locations)
-
-
-def process_matching_form(job_desc, required_skills, seniority, experience, emp_type, locations):
-    """Process the matching form and display results"""
-    if not required_skills and not job_desc:
-        st.warning("Please enter either job description or required skills")
-        return
-    
-    with st.spinner("Finding and ranking candidates..."):
-        try:
-            # Initialize matcher and ranker
-            matcher = AdvancedCandidateMatcher()
-            ranker = CandidateRanker()
-            
-            # If job description is provided but no skills, extract skills from JD
-            if not required_skills and job_desc:
-                with st.spinner("Extracting skills from job description..."):
-                    required_skills = extract_skills_from_jd(job_desc)
-                    st.session_state.required_skills = required_skills
-            
-            # Match candidates
-            matches = matcher.match_candidates(
-                required_skills=required_skills,
-                seniority=seniority.lower() if seniority else None,
-                experience_years=experience if experience else None,
-                employment_type=emp_type.lower() if emp_type else None,
-                locations=[loc.lower() for loc in locations] if locations else None,
-                top_n=10
-            )
-            
-            # Convert matches to dict for ranking
-            matches_dict = [asdict(match) for match in matches]
-            
-            # Rank candidates
-            ranked_candidates = ranker.rank_candidates(
-                candidates=matches_dict,
-                job_description=job_desc,
-                company_culture=""  # Could be loaded from company profile
-            )
-            
-            # Display results
-            display_ranked_candidates(ranked_candidates, required_skills)
-            
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
-            st.exception(e)
-
-
-def extract_skills_from_jd(job_description: str) -> List[str]:
-    """Extract skills from job description using Groq"""
-    try:
-        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-        
-        response = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": "You are an AI assistant that extracts skills from job descriptions. Return only a JSON array of skills."
-                },
-                {
-                    "role": "user",
-                    "content": f"Extract the key technical and professional skills from this job description. Return only a JSON array of skill names.\n\nJob Description:\n{job_description}"
-                }
-            ],
-            model="llama-3.3-70b-versatile",
-            temperature=0.2,
-            max_tokens=500,
-            response_format={"type": "json_object"}
-        )
-        
-        result = json.loads(response.choices[0].message.content)
-        return result.get('skills', [])
-    except Exception as e:
-        st.warning(f"Could not extract skills from job description: {str(e)}")
-        return []
-
-
-def display_ranked_candidates(candidates: List[Dict[str, Any]], required_skills: List[str]):
-    """Display ranked candidates with detailed information"""
-    if not candidates:
-        st.info("No matching candidates found. Try adjusting your criteria.")
-        return
-    
-    st.subheader("🥇 Top Candidates")
-    st.markdown(f"Found {len(candidates)} matching candidates")
-    
-    for i, candidate in enumerate(candidates[:10], 1):  # Show top 10
-        with st.expander(f"{i}. {candidate['name']} - Score: {candidate['ranking_scores']['overall']:.2f}"):
-            col1, col2 = st.columns([1, 2])
-            
-            with col1:
-                st.metric("Match Score", f"{candidate['ranking_scores']['overall']:.0%}")
-                st.metric("Seniority", candidate.get('seniority', 'N/A').title())
-                st.metric("Experience", candidate.get('experience_years', 'N/A'))
-                st.metric("Employment Type", candidate.get('employment_type', 'N/A').title())
-            
-            with col2:
-                # Skills section
-                st.markdown("#### 🛠 Skills")
-                
-                # Display matching skills
-                matching_skills = set(candidate.get('skills', [])).intersection(required_skills)
-                if matching_skills:
-                    st.markdown("✅ " + ", ".join(matching_skills))
-                
-                # Display missing skills
-                missing_skills = set(required_skills) - set(candidate.get('skills', []))
-                if missing_skills:
-                    st.markdown("❌ Missing: " + ", ".join(missing_skills))
-                
-                # Additional skills
-                other_skills = set(candidate.get('skills', [])) - set(required_skills)
-                if other_skills:
-                    st.markdown("🔹 Additional: " + ", ".join(other_skills))
-                
-                # Detailed scores
-                with st.expander("Detailed Scores"):
-                    scores = candidate.get('ranking_scores', {})
-                    for key, value in scores.items():
-                        if key != 'overall':
-                            st.progress(int(value * 100), text=f"{key.replace('_', ' ').title()}: {value:.2f}")
-            
-            st.markdown("---")
-
-
-def show_background_check():
-    """Display the background check interface"""
-    st.title("🔍 AI-Powered Background Check")
-    st.markdown("""
-    Generate interview questions and verify candidate information using AI.
-    This helps streamline the pre-screening process.
-    """)
-    
-    # Initialize session state
-    if 'candidate_data' not in st.session_state:
-        st.session_state.candidate_data = {
-            'name': '',
-            'email': '',
-            'phone': '',
-            'skills': [],
-            'experience': [],
-            'education': []
-        }
-    
-    # Form for candidate information
-    with st.form("candidate_info"):
-        st.subheader("Candidate Information")
-        
         col1, col2 = st.columns(2)
         
         with col1:
-            name = st.text_input("Full Name", value=st.session_state.candidate_data['name'])
-            email = st.text_input("Email", value=st.session_state.candidate_data['email'])
-            phone = st.text_input("Phone", value=st.session_state.candidate_data['phone'])
+            job_title = st.text_input("Job Title", "Senior Software Engineer")
+            required_skills = st.text_area(
+                "Required Skills (comma-separated)", 
+                "python, machine learning, data analysis"
+            )
+            preferred_skills = st.text_area(
+                "Preferred Skills (comma-separated)", 
+                "docker, kubernetes, aws"
+            )
         
         with col2:
-            skills = st.text_area("Skills (one per line)", 
-                               value="\n".join(st.session_state.candidate_data['skills']))
-        
-        # Experience section
-        st.subheader("Work Experience")
-        experience = []
-        for i, exp in enumerate(st.session_state.candidate_data.get('experience', [{}])):
-            with st.expander(f"Experience {i+1}" if exp.get('company') else "Add Experience"):
-                col1, col2 = st.columns(2)
-                with col1:
-                    company = st.text_input("Company", key=f"exp_company_{i}", 
-                                          value=exp.get('company', ''))
-                    position = st.text_input("Position", key=f"exp_position_{i}", 
-                                           value=exp.get('position', ''))
-                with col2:
-                    start_date = st.date_input("Start Date", key=f"exp_start_{i}",
-                                             value=datetime.date(2020, 1, 1) if not exp.get('start_date') 
-                                             else datetime.datetime.strptime(exp['start_date'], '%Y-%m-%d').date())
-                    end_date = st.date_input("End Date", key=f"exp_end_{i}",
-                                           value=datetime.date.today() if not exp.get('end_date') 
-                                           else (datetime.datetime.strptime(exp['end_date'], '%Y-%m-%d').date() 
-                                                 if exp['end_date'].lower() != 'present' 
-                                                 else datetime.date.today()))
-                description = st.text_area("Description", key=f"exp_desc_{i}",
-                                         value=exp.get('description', ''))
-                
-                if company and position:
-                    experience.append({
-                        'company': company,
-                        'position': position,
-                        'start_date': start_date.strftime('%Y-%m-%d'),
-                        'end_date': 'present' if end_date == datetime.date.today() else end_date.strftime('%Y-%m-%d'),
-                        'description': description
-                    })
-        
-        # Add new experience button
-        if st.button("Add Another Position"):
-            st.session_state.candidate_data['experience'].append({})
-            st.experimental_rerun()
-        
-        # Education section
-        st.subheader("Education")
-        education = []
-        for i, edu in enumerate(st.session_state.candidate_data.get('education', [{}])):
-            with st.expander(f"Education {i+1}" if edu.get('institution') else "Add Education"):
-                col1, col2 = st.columns(2)
-                with col1:
-                    institution = st.text_input("Institution", key=f"edu_inst_{i}",
-                                              value=edu.get('institution', ''))
-                    degree = st.text_input("Degree", key=f"edu_degree_{i}",
-                                         value=edu.get('degree', ''))
-                with col2:
-                    field = st.text_input("Field of Study", key=f"edu_field_{i}",
-                                        value=edu.get('field', ''))
-                    grad_year = st.number_input("Graduation Year", key=f"edu_year_{i}",
-                                               min_value=1900, max_value=datetime.date.today().year + 5,
-                                               value=edu.get('year', datetime.date.today().year))
-                
-                if institution and degree:
-                    education.append({
-                        'institution': institution,
-                        'degree': degree,
-                        'field': field,
-                        'year': grad_year
-                    })
-        
-        # Add new education button
-        if st.button("Add Another Degree"):
-            st.session_state.candidate_data['education'].append({})
-            st.experimental_rerun()
-        
-        # Job description
-        st.subheader("Job Description")
-        job_description = st.text_area("Paste the job description here", 
-                                     height=200,
-                                     value=st.session_state.get('job_description', ''))
-        
-        # Submit button
-        submitted = st.form_submit_button("Generate Report")
-        
-        if submitted:
-            # Update session state
-            st.session_state.candidate_data = {
-                'name': name,
-                'email': email,
-                'phone': phone,
-                'skills': [s.strip() for s in skills.split('\n') if s.strip()],
-                'experience': experience,
-                'education': education
-            }
-            st.session_state.job_description = job_description
-            
-            # Process the form
-            asyncio.run(process_background_check(
-                st.session_state.candidate_data,
-                job_description
-            ))
-
-
-async def process_background_check(candidate_data: Dict[str, Any], job_description: str):
-    """Process background check and generate report"""
-    with st.spinner("Generating background check report..."):
-        try:
-            # Initialize background checker
-            checker = BackgroundChecker()
-            
-            # Generate report
-            report = await checker.generate_pre_screening_report(
-                candidate_profile=candidate_data,
-                job_description=job_description
+            seniority = st.selectbox(
+                "Seniority Level",
+                ["", "junior", "midlevel", "senior"],
+                index=2
             )
+            experience_years = st.selectbox(
+                "Minimum Experience",
+                ["", "0-2", "3-5", "5-10", "10+"],
+                index=3
+            )
+            employment_type = st.selectbox(
+                "Employment Type",
+                ["", "full-time", "part-time", "contract"],
+                index=1
+            )
+        
+        job_description = st.text_area(
+            "Job Description",
+            "We are looking for an experienced software engineer with strong skills in Python and machine learning..."
+        )
+        
+        submitted = st.form_submit_button("Find Best Matches")
+    
+    if submitted:
+        with st.spinner("Finding the best candidates..."):
+            try:
+                matcher = AdvancedCandidateMatcher()
+                
+                # Process skills
+                required_skills_list = [s.strip() for s in required_skills.split(',') if s.strip()]
+                preferred_skills_list = [s.strip() for s in preferred_skills.split(',') if s.strip()]
+                
+                # Get matched candidates
+                candidates = matcher.match_candidates(
+                    required_skills=required_skills_list,
+                    preferred_skills=preferred_skills_list,
+                    seniority=seniority if seniority else None,
+                    employment_type=employment_type if employment_type else None,
+                    experience_years=experience_years if experience_years else None,
+                    top_n=5
+                )
+                
+                if not candidates:
+                    st.warning("No candidates found matching all criteria. Try broadening your search.")
+                    return
+                
+                # Display results
+                st.subheader(f"Top {len(candidates)} Matches")
+                
+                for i, candidate in enumerate(candidates, 1):
+                    with st.expander(f"{i}. {candidate.candidate['name']} - Score: {candidate.score:.1f}"):
+                        st.markdown(f"**Seniority:** {candidate.candidate.get('seniority', 'N/A')}")
+                        st.markdown(f"**Experience:** {candidate.candidate.get('experience_years', 'N/A')}")
+                        st.markdown(f"**Employment Type:** {candidate.candidate.get('employment_type', 'N/A')}")
+                        
+                        col1, col2 = st.columns(2)
+                        
+                        with col1:
+                            st.markdown("**Skills:**")
+                            for skill in candidate.candidate.get('skills', []):
+                                st.markdown(f"- {skill}")
+                        
+                        with col2:
+                            if candidate.skill_matches:
+                                st.markdown("**Matched Skills:**")
+                                for skill in candidate.skill_matches:
+                                    st.markdown(f"- ✅ {skill}")
+                            
+                            if hasattr(candidate, 'missing_skills') and candidate.missing_skills:
+                                st.markdown("**Missing Skills:**")
+                                for skill in candidate.missing_skills:
+                                    st.markdown(f"- ❌ {skill}")
+                        
+                        # Show skill gap analysis
+                        if hasattr(candidate, 'skill_gap_analysis') and candidate.skill_gap_analysis:
+                            st.markdown("**Skill Gap Analysis:**")
+                            for skill, analysis in candidate.skill_gap_analysis.items():
+                                with st.expander(f"Analysis for {skill}"):
+                                    st.write(analysis)
+                        
+                        # Show interview questions
+                        if hasattr(candidate, 'interview_questions') and candidate.interview_questions:
+                            st.markdown("**Suggested Interview Questions:**")
+                            for j, question in enumerate(candidate.interview_questions, 1):
+                                st.markdown(f"{j}. {question}")
+                        
+                        # Generate full report
+                        if st.button(f"Generate Full Report for {candidate.candidate['name']}"):
+                            report = matcher.generate_candidate_report(
+                                candidate,
+                                job_title=job_title,
+                                job_description=job_description
+                            )
+                            st.download_button(
+                                label="Download Report as Markdown",
+                                data=report,
+                                file_name=f"candidate_report_{candidate.candidate['name'].lower().replace(' ', '_')}.md",
+                                mime="text/markdown"
+                            )
+                            
+                            st.markdown("---")
+                            st.markdown("## Full Report Preview")
+                            st.markdown(report)
             
-            # Display report
-            display_background_report(report)
-            
-        except Exception as e:
-            st.error(f"An error occurred: {str(e)}")
-            st.exception(e)
-
-
-def display_background_report(report: Dict[str, Any]):
-    """Display the background check report"""
-    if not report or report.get('status') == 'error':
-        st.error("Failed to generate report. Please try again.")
-        return
-    
-    st.success("Background check report generated successfully!")
-    
-    # Candidate info
-    st.subheader("👤 Candidate Information")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown(f"**Name:** {report['candidate_info']['name']}")
-        st.markdown(f"**Email:** {report['candidate_info']['email']}")
-        st.markdown(f"**Phone:** {report['candidate_info']['phone']}")
-    
-    # Employment verification
-    if 'employment_verification' in report:
-        st.subheader("🏢 Employment Verification")
-        verification = report['employment_verification']
-        
-        if verification.get('overall_status') == 'verified':
-            st.success("✅ Employment history verified")
-        elif verification.get('overall_status') == 'needs_review':
-            st.warning("⚠️ Employment history needs review")
-        elif verification.get('overall_status') == 'concerns':
-            st.error("❌ Concerns found in employment history")
-        
-        if 'red_flags' in verification and verification['red_flags']:
-            st.warning("**Potential Issues:**")
-            for flag in verification['red_flags']:
-                st.write(f"- {flag}")
-    
-    # Interview questions
-    if 'interview_questions' in report and report['interview_questions']:
-        st.subheader("❓ Recommended Interview Questions")
-        
-        for i, question in enumerate(report['interview_questions'][:5], 1):  # Show top 5
-            with st.expander(f"{i}. {question.get('question', '')}"):
-                st.markdown(f"**Type:** {question.get('type', 'N/A')}")
-                st.markdown(f"**Evaluates:** {question.get('evaluates', 'N/A')}")
-                if 'skills' in question and question['skills']:
-                    st.markdown("**Skills Assessed:** " + ", ".join(question['skills']))
-    
-    # Assessment
-    if 'assessment' in report:
-        st.subheader("📝 Assessment")
-        assessment = report['assessment']
-        
-        if 'summary' in assessment:
-            st.markdown("### Summary")
-            st.write(assessment['summary'])
-        
-        if 'strengths' in assessment and assessment['strengths']:
-            st.markdown("### ✅ Key Strengths")
-            if isinstance(assessment['strengths'], list):
-                for strength in assessment['strengths']:
-                    st.write(f"- {strength}")
-            else:
-                st.write(assessment['strengths'])
-        
-        if 'concerns' in assessment and assessment['concerns']:
-            st.markdown("### ⚠️ Potential Concerns")
-            if isinstance(assessment['concerns'], list):
-                for concern in assessment['concerns']:
-                    st.write(f"- {concern}")
-            else:
-                st.write(assessment['concerns'])
-        
-        if 'recommendations' in assessment and assessment['recommendations']:
-            st.markdown("### 📋 Recommendations")
-            if isinstance(assessment['recommendations'], list):
-                for rec in assessment['recommendations']:
-                    st.write(f"- {rec}")
-            else:
-                st.write(assessment['recommendations'])
-    
-    # Generated timestamp
-    if 'generated_at' in report:
-        st.caption(f"Report generated on {report['generated_at']}")
-
+            except Exception as e:
+                st.error(f"An error occurred: {str(e)}")
+                import traceback
+                st.text(traceback.format_exc())
 
 if __name__ == "__main__":
-    import sys
-    # Create an event loop for async operations
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    
-    try:
-        sys.exit(main_app())
-    finally:
-        loop.close()
+    main_app()
