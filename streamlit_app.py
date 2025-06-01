@@ -4,14 +4,18 @@ import pandas as pd
 import json
 import plotly.express as px
 from collections import Counter
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 import numpy as np
 import tempfile
 import os
+import datetime
 from pathlib import Path
 from cv_analyser import CVAnalyzer
 from groq_search import AICandidateSearch
+from ai_matching import AdvancedCandidateMatcher, CandidateRanker, BackgroundChecker
 import time
+import asyncio
+from dataclasses import asdict
 
 # Load the dataset
 @st.cache_data
@@ -845,8 +849,8 @@ def main_app():
     # Update app mode based on user selection
     new_app_mode = st.sidebar.selectbox(
         "Choose a feature:",
-        ["Home", "CV Analyser", "Market Insights", "AI Candidate Search"],
-        index=["Home", "CV Analyser", "Market Insights", "AI Candidate Search"].index(st.session_state.app_mode)
+        ["Home", "CV Analyser", "Market Insights", "AI Candidate Search", "AI Matching & Ranking", "Background Check"],
+        index=["Home", "CV Analyser", "Market Insights", "AI Candidate Search", "AI Matching & Ranking", "Background Check"].index(st.session_state.app_mode)
     )
     
     if new_app_mode != st.session_state.app_mode:
@@ -860,6 +864,10 @@ def main_app():
         show_cv_analyser()
     elif st.session_state.app_mode == "AI Candidate Search":
         display_ai_candidate_search()
+    elif st.session_state.app_mode == "AI Matching & Ranking":
+        show_ai_matching_ranking()
+    elif st.session_state.app_mode == "Background Check":
+        show_background_check()
     else:
         show_home()
 
@@ -1092,7 +1100,7 @@ def show_cv_analyser():
                 experience_data = []
                 
                 # Check standard experience field first
-                if 'experience' in analysis and analysis['experience']:
+                if 'experience' in analysis:
                     experience_data = analysis['experience']
                 # Check if experience is in candidate_summary
                 elif 'candidate_summary' in analysis and 'experience' in analysis['candidate_summary']:
@@ -1236,3 +1244,456 @@ def show_cv_analyser():
 
 if __name__ == "__main__":
     main_app()
+
+def show_ai_matching_ranking():
+    """Display the AI Matching & Ranking interface"""
+    st.title("🤖 AI-Powered Candidate Matching & Ranking")
+    st.markdown("""
+    Use AI to find and rank the best candidates based on job requirements.
+    The system analyzes skills, experience, seniority, and cultural fit.
+    """)
+    
+    # Initialize session state for form data
+    if 'job_description' not in st.session_state:
+        st.session_state.job_description = ""
+    if 'required_skills' not in st.session_state:
+        st.session_state.required_skills = []
+    if 'seniority' not in st.session_state:
+        st.session_state.seniority = ""
+    if 'experience_years' not in st.session_state:
+        st.session_state.experience_years = ""
+    if 'employment_type' not in st.session_state:
+        st.session_state.employment_type = ""
+    if 'locations' not in st.session_state:
+        st.session_state.locations = []
+    
+    with st.form("job_requirements"):
+        st.subheader("Job Requirements")
+        
+        # Job description
+        job_desc = st.text_area(
+            "Job Description",
+            value=st.session_state.job_description,
+            help="Enter a detailed job description"
+        )
+        
+        # Skills input
+        skills_input = st.text_input(
+            "Required Skills (comma separated)",
+            value=", ".join(st.session_state.required_skills),
+            help="Enter skills separated by commas"
+        )
+        
+        # Other fields
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            seniority = st.selectbox(
+                "Seniority Level",
+                ["", "Junior", "Mid-Level", "Senior"],
+                index=["", "Junior", "Mid-Level", "Senior"].index(st.session_state.seniority) if st.session_state.seniority else 0
+            )
+        
+        with col2:
+            experience = st.selectbox(
+                "Years of Experience",
+                ["", "1-3", "3-5", "5-10", "10+", "15+"],
+                index=["", "1-3", "3-5", "5-10", "10+", "15+"].index(st.session_state.experience_years) if st.session_state.experience_years else 0
+            )
+        
+        with col3:
+            emp_type = st.selectbox(
+                "Employment Type",
+                ["", "Full-time", "Part-time", "Contract", "Remote"],
+                index=["", "Full-time", "Part-time", "Contract", "Remote"].index(st.session_state.employment_type) if st.session_state.employment_type else 0
+            )
+        
+        # Locations
+        locations = st.multiselect(
+            "Preferred Locations",
+            ["North America", "Europe", "Asia", "South America", "Africa", "Australia", "Remote"],
+            default=st.session_state.locations
+        )
+        
+        # Submit button
+        submitted = st.form_submit_button("Find & Rank Candidates")
+        
+        if submitted:
+            # Update session state
+            st.session_state.job_description = job_desc
+            st.session_state.required_skills = [s.strip() for s in skills_input.split(",") if s.strip()]
+            st.session_state.seniority = seniority
+            st.session_state.experience_years = experience
+            st.session_state.employment_type = emp_type
+            st.session_state.locations = locations
+            
+            # Process the form
+            process_matching_form(job_desc, st.session_state.required_skills, seniority, 
+                                experience, emp_type, locations)
+
+
+def process_matching_form(job_desc, required_skills, seniority, experience, emp_type, locations):
+    """Process the matching form and display results"""
+    if not required_skills and not job_desc:
+        st.warning("Please enter either job description or required skills")
+        return
+    
+    with st.spinner("Finding and ranking candidates..."):
+        try:
+            # Initialize matcher and ranker
+            matcher = AdvancedCandidateMatcher()
+            ranker = CandidateRanker()
+            
+            # If job description is provided but no skills, extract skills from JD
+            if not required_skills and job_desc:
+                with st.spinner("Extracting skills from job description..."):
+                    required_skills = extract_skills_from_jd(job_desc)
+                    st.session_state.required_skills = required_skills
+            
+            # Match candidates
+            matches = matcher.match_candidates(
+                required_skills=required_skills,
+                seniority=seniority.lower() if seniority else None,
+                experience_years=experience if experience else None,
+                employment_type=emp_type.lower() if emp_type else None,
+                locations=[loc.lower() for loc in locations] if locations else None,
+                top_n=10
+            )
+            
+            # Convert matches to dict for ranking
+            matches_dict = [asdict(match) for match in matches]
+            
+            # Rank candidates
+            ranked_candidates = ranker.rank_candidates(
+                candidates=matches_dict,
+                job_description=job_desc,
+                company_culture=""  # Could be loaded from company profile
+            )
+            
+            # Display results
+            display_ranked_candidates(ranked_candidates, required_skills)
+            
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+            st.exception(e)
+
+
+def extract_skills_from_jd(job_description: str) -> List[str]:
+    """Extract skills from job description using Groq"""
+    try:
+        client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+        
+        response = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are an AI assistant that extracts skills from job descriptions. Return only a JSON array of skills."
+                },
+                {
+                    "role": "user",
+                    "content": f"Extract the key technical and professional skills from this job description. Return only a JSON array of skill names.\n\nJob Description:\n{job_description}"
+                }
+            ],
+            model="llama-3.3-70b-versatile",
+            temperature=0.2,
+            max_tokens=500,
+            response_format={"type": "json_object"}
+        )
+        
+        result = json.loads(response.choices[0].message.content)
+        return result.get('skills', [])
+    except Exception as e:
+        st.warning(f"Could not extract skills from job description: {str(e)}")
+        return []
+
+
+def display_ranked_candidates(candidates: List[Dict[str, Any]], required_skills: List[str]):
+    """Display ranked candidates with detailed information"""
+    if not candidates:
+        st.info("No matching candidates found. Try adjusting your criteria.")
+        return
+    
+    st.subheader("🥇 Top Candidates")
+    st.markdown(f"Found {len(candidates)} matching candidates")
+    
+    for i, candidate in enumerate(candidates[:10], 1):  # Show top 10
+        with st.expander(f"{i}. {candidate['name']} - Score: {candidate['ranking_scores']['overall']:.2f}"):
+            col1, col2 = st.columns([1, 2])
+            
+            with col1:
+                st.metric("Match Score", f"{candidate['ranking_scores']['overall']:.0%}")
+                st.metric("Seniority", candidate.get('seniority', 'N/A').title())
+                st.metric("Experience", candidate.get('experience_years', 'N/A'))
+                st.metric("Employment Type", candidate.get('employment_type', 'N/A').title())
+            
+            with col2:
+                # Skills section
+                st.markdown("#### 🛠 Skills")
+                
+                # Display matching skills
+                matching_skills = set(candidate.get('skills', [])).intersection(required_skills)
+                if matching_skills:
+                    st.markdown("✅ " + ", ".join(matching_skills))
+                
+                # Display missing skills
+                missing_skills = set(required_skills) - set(candidate.get('skills', []))
+                if missing_skills:
+                    st.markdown("❌ Missing: " + ", ".join(missing_skills))
+                
+                # Additional skills
+                other_skills = set(candidate.get('skills', [])) - set(required_skills)
+                if other_skills:
+                    st.markdown("🔹 Additional: " + ", ".join(other_skills))
+                
+                # Detailed scores
+                with st.expander("Detailed Scores"):
+                    scores = candidate.get('ranking_scores', {})
+                    for key, value in scores.items():
+                        if key != 'overall':
+                            st.progress(int(value * 100), text=f"{key.replace('_', ' ').title()}: {value:.2f}")
+            
+            st.markdown("---")
+
+
+def show_background_check():
+    """Display the background check interface"""
+    st.title("🔍 AI-Powered Background Check")
+    st.markdown("""
+    Generate interview questions and verify candidate information using AI.
+    This helps streamline the pre-screening process.
+    """)
+    
+    # Initialize session state
+    if 'candidate_data' not in st.session_state:
+        st.session_state.candidate_data = {
+            'name': '',
+            'email': '',
+            'phone': '',
+            'skills': [],
+            'experience': [],
+            'education': []
+        }
+    
+    # Form for candidate information
+    with st.form("candidate_info"):
+        st.subheader("Candidate Information")
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            name = st.text_input("Full Name", value=st.session_state.candidate_data['name'])
+            email = st.text_input("Email", value=st.session_state.candidate_data['email'])
+            phone = st.text_input("Phone", value=st.session_state.candidate_data['phone'])
+        
+        with col2:
+            skills = st.text_area("Skills (one per line)", 
+                               value="\n".join(st.session_state.candidate_data['skills']))
+        
+        # Experience section
+        st.subheader("Work Experience")
+        experience = []
+        for i, exp in enumerate(st.session_state.candidate_data.get('experience', [{}])):
+            with st.expander(f"Experience {i+1}" if exp.get('company') else "Add Experience"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    company = st.text_input("Company", key=f"exp_company_{i}", 
+                                          value=exp.get('company', ''))
+                    position = st.text_input("Position", key=f"exp_position_{i}", 
+                                           value=exp.get('position', ''))
+                with col2:
+                    start_date = st.date_input("Start Date", key=f"exp_start_{i}",
+                                             value=datetime.date(2020, 1, 1) if not exp.get('start_date') 
+                                             else datetime.datetime.strptime(exp['start_date'], '%Y-%m-%d').date())
+                    end_date = st.date_input("End Date", key=f"exp_end_{i}",
+                                           value=datetime.date.today() if not exp.get('end_date') 
+                                           else (datetime.datetime.strptime(exp['end_date'], '%Y-%m-%d').date() 
+                                                 if exp['end_date'].lower() != 'present' 
+                                                 else datetime.date.today()))
+                description = st.text_area("Description", key=f"exp_desc_{i}",
+                                         value=exp.get('description', ''))
+                
+                if company and position:
+                    experience.append({
+                        'company': company,
+                        'position': position,
+                        'start_date': start_date.strftime('%Y-%m-%d'),
+                        'end_date': 'present' if end_date == datetime.date.today() else end_date.strftime('%Y-%m-%d'),
+                        'description': description
+                    })
+        
+        # Add new experience button
+        if st.button("Add Another Position"):
+            st.session_state.candidate_data['experience'].append({})
+            st.experimental_rerun()
+        
+        # Education section
+        st.subheader("Education")
+        education = []
+        for i, edu in enumerate(st.session_state.candidate_data.get('education', [{}])):
+            with st.expander(f"Education {i+1}" if edu.get('institution') else "Add Education"):
+                col1, col2 = st.columns(2)
+                with col1:
+                    institution = st.text_input("Institution", key=f"edu_inst_{i}",
+                                              value=edu.get('institution', ''))
+                    degree = st.text_input("Degree", key=f"edu_degree_{i}",
+                                         value=edu.get('degree', ''))
+                with col2:
+                    field = st.text_input("Field of Study", key=f"edu_field_{i}",
+                                        value=edu.get('field', ''))
+                    grad_year = st.number_input("Graduation Year", key=f"edu_year_{i}",
+                                               min_value=1900, max_value=datetime.date.today().year + 5,
+                                               value=edu.get('year', datetime.date.today().year))
+                
+                if institution and degree:
+                    education.append({
+                        'institution': institution,
+                        'degree': degree,
+                        'field': field,
+                        'year': grad_year
+                    })
+        
+        # Add new education button
+        if st.button("Add Another Degree"):
+            st.session_state.candidate_data['education'].append({})
+            st.experimental_rerun()
+        
+        # Job description
+        st.subheader("Job Description")
+        job_description = st.text_area("Paste the job description here", 
+                                     height=200,
+                                     value=st.session_state.get('job_description', ''))
+        
+        # Submit button
+        submitted = st.form_submit_button("Generate Report")
+        
+        if submitted:
+            # Update session state
+            st.session_state.candidate_data = {
+                'name': name,
+                'email': email,
+                'phone': phone,
+                'skills': [s.strip() for s in skills.split('\n') if s.strip()],
+                'experience': experience,
+                'education': education
+            }
+            st.session_state.job_description = job_description
+            
+            # Process the form
+            asyncio.run(process_background_check(
+                st.session_state.candidate_data,
+                job_description
+            ))
+
+
+async def process_background_check(candidate_data: Dict[str, Any], job_description: str):
+    """Process background check and generate report"""
+    with st.spinner("Generating background check report..."):
+        try:
+            # Initialize background checker
+            checker = BackgroundChecker()
+            
+            # Generate report
+            report = await checker.generate_pre_screening_report(
+                candidate_profile=candidate_data,
+                job_description=job_description
+            )
+            
+            # Display report
+            display_background_report(report)
+            
+        except Exception as e:
+            st.error(f"An error occurred: {str(e)}")
+            st.exception(e)
+
+
+def display_background_report(report: Dict[str, Any]):
+    """Display the background check report"""
+    if not report or report.get('status') == 'error':
+        st.error("Failed to generate report. Please try again.")
+        return
+    
+    st.success("Background check report generated successfully!")
+    
+    # Candidate info
+    st.subheader("👤 Candidate Information")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.markdown(f"**Name:** {report['candidate_info']['name']}")
+        st.markdown(f"**Email:** {report['candidate_info']['email']}")
+        st.markdown(f"**Phone:** {report['candidate_info']['phone']}")
+    
+    # Employment verification
+    if 'employment_verification' in report:
+        st.subheader("🏢 Employment Verification")
+        verification = report['employment_verification']
+        
+        if verification.get('overall_status') == 'verified':
+            st.success("✅ Employment history verified")
+        elif verification.get('overall_status') == 'needs_review':
+            st.warning("⚠️ Employment history needs review")
+        elif verification.get('overall_status') == 'concerns':
+            st.error("❌ Concerns found in employment history")
+        
+        if 'red_flags' in verification and verification['red_flags']:
+            st.warning("**Potential Issues:**")
+            for flag in verification['red_flags']:
+                st.write(f"- {flag}")
+    
+    # Interview questions
+    if 'interview_questions' in report and report['interview_questions']:
+        st.subheader("❓ Recommended Interview Questions")
+        
+        for i, question in enumerate(report['interview_questions'][:5], 1):  # Show top 5
+            with st.expander(f"{i}. {question.get('question', '')}"):
+                st.markdown(f"**Type:** {question.get('type', 'N/A')}")
+                st.markdown(f"**Evaluates:** {question.get('evaluates', 'N/A')}")
+                if 'skills' in question and question['skills']:
+                    st.markdown("**Skills Assessed:** " + ", ".join(question['skills']))
+    
+    # Assessment
+    if 'assessment' in report:
+        st.subheader("📝 Assessment")
+        assessment = report['assessment']
+        
+        if 'summary' in assessment:
+            st.markdown("### Summary")
+            st.write(assessment['summary'])
+        
+        if 'strengths' in assessment and assessment['strengths']:
+            st.markdown("### ✅ Key Strengths")
+            if isinstance(assessment['strengths'], list):
+                for strength in assessment['strengths']:
+                    st.write(f"- {strength}")
+            else:
+                st.write(assessment['strengths'])
+        
+        if 'concerns' in assessment and assessment['concerns']:
+            st.markdown("### ⚠️ Potential Concerns")
+            if isinstance(assessment['concerns'], list):
+                for concern in assessment['concerns']:
+                    st.write(f"- {concern}")
+            else:
+                st.write(assessment['concerns'])
+        
+        if 'recommendations' in assessment and assessment['recommendations']:
+            st.markdown("### 📋 Recommendations")
+            if isinstance(assessment['recommendations'], list):
+                for rec in assessment['recommendations']:
+                    st.write(f"- {rec}")
+            else:
+                st.write(assessment['recommendations'])
+    
+    # Generated timestamp
+    if 'generated_at' in report:
+        st.caption(f"Report generated on {report['generated_at']}")
+
+
+if __name__ == "__main__":
+    import sys
+    # Create an event loop for async operations
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
+    try:
+        sys.exit(main_app())
+    finally:
+        loop.close()
