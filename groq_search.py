@@ -217,3 +217,54 @@ class AICandidateSearch:
         Return the results as a JSON dump string.
         """
         return json.dumps(results, indent=2) if results else "[]"
+        
+    def generate_outreach_email(self, candidate_name: str, recruiter_name: str, company_name: str, 
+                             job_title: str, work_location: str, key_requirements: str) -> str:
+        """
+        Generate a personalized outreach email using Groq.
+        """
+        try:
+            # Prepare the prompt for the LLM
+            system_prompt = """You are an expert recruiter who writes compelling and personalized outreach emails. 
+            Create a professional yet engaging email that will catch the candidate's attention. 
+            The email should be concise, personalized, and highlight why the opportunity is exciting."""
+            
+            user_prompt = f"""
+            Write a personalized outreach email with the following details:
+            - Candidate Name: {candidate_name}
+            - Recruiter Name: {recruiter_name}
+            - Company: {company_name}
+            - Job Title: {job_title}
+            - Work Location: {work_location}
+            - Key Requirements: {key_requirements}
+            
+            The email should:
+            1. Start with a personalized greeting
+            2. Mention something specific about the candidate's background that matches the role
+            3. Briefly describe the opportunity and why it's exciting
+            4. Highlight 2-3 key requirements that match the candidate's profile
+            5. Include a clear call-to-action for next steps
+            6. End professionally with the recruiter's name and company
+            
+            Keep the tone professional but conversational. The email should be concise (3-4 short paragraphs max).
+            """
+            
+            # Call Groq API
+            response = self.client.chat.completions.create(
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt}
+                ],
+                model="llama-3.3-70b-versatile",
+                temperature=0.7,
+                max_tokens=1000
+            )
+            
+            # Extract and return the generated email
+            if response.choices and response.choices[0].message.content:
+                return response.choices[0].message.content.strip()
+            return ""
+            
+        except Exception as e:
+            print(f"Error generating outreach email: {str(e)}")
+            raise

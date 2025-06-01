@@ -26,9 +26,23 @@ from advanced_matching import AdvancedCandidateMatcher, ScoredCandidate
 # Load the dataset
 @st.cache_data
 def load_data():
-    with open('dataset.json', 'r') as f:
-        data = json.load(f)
-    return pd.DataFrame(data)
+    try:
+        with open('dataset.json', 'r') as f:
+            data = json.load(f)
+        # It's good practice to check if data is suitable for DataFrame conversion
+        if not isinstance(data, (list, dict)): 
+            st.error("🚨 Error: `dataset.json` content is not in a format suitable for a DataFrame (e.g., list of records or dict of lists).")
+            return pd.DataFrame()
+        return pd.DataFrame(data)
+    except FileNotFoundError:
+        st.error("🚨 Error: `dataset.json` not found. Please make sure the dataset file exists in the root directory.")
+        return pd.DataFrame()
+    except json.JSONDecodeError:
+        st.error("🚨 Error: Could not decode `dataset.json`. Please ensure it's a valid JSON file.")
+        return pd.DataFrame()
+    except Exception as e: # Catch other potential errors during DataFrame creation
+        st.error(f"🚨 An unexpected error occurred while loading or processing data: {e}")
+        return pd.DataFrame()
 
 def get_top_skills(df: pd.DataFrame, top_n: int = 10) -> pd.DataFrame:
     """Extract top N skills from the dataset"""
@@ -54,12 +68,6 @@ def get_skills_by_seniority(df: pd.DataFrame, seniority: str) -> pd.DataFrame:
     all_skills = [skill for sublist in filtered_df['skills'].dropna() for skill in sublist]
     skill_counts = Counter(all_skills)
     return pd.DataFrame(skill_counts.most_common(10), columns=['Skill', 'Count'])
-
-# Function to load local CSS
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 def setup_page():
     # Apply custom CSS
@@ -151,7 +159,11 @@ def main():
             )
         with col2:
             # Get senior count safely
-            senior_count = seniority_dist[seniority_dist['seniority'] == 'senior']['count'].iloc[0] if not seniority_dist[seniority_dist['seniority'] == 'senior'].empty else 0
+            _senior_candidates_df = seniority_dist[seniority_dist['seniority'] == 'senior']
+            if not _senior_candidates_df.empty and 'count' in _senior_candidates_df.columns and not _senior_candidates_df['count'].empty:
+                senior_count = _senior_candidates_df['count'].iloc[0]
+            else:
+                senior_count = 0
             st.markdown(
                 f"""
                 <div class="custom-card">
@@ -161,8 +173,13 @@ def main():
                 """, unsafe_allow_html=True
             )
         with col3:
-            top_skill = top_skills.iloc[0]['Skill'] if not top_skills.empty else "N/A"
-            top_skill_count = top_skills.iloc[0]['Count'] if not top_skills.empty else 0
+            if not top_skills.empty:
+                _first_skill_series = top_skills.iloc[0]
+                top_skill = _first_skill_series.get('Skill', "N/A")
+                top_skill_count = _first_skill_series.get('Count', 0)
+            else:
+                top_skill = "N/A"
+                top_skill_count = 0
             st.markdown(
                 f"""
                 <div class="custom-card">
@@ -1294,6 +1311,19 @@ def show_cv_analyser():
                     else:
                         st.markdown("No specific development areas identified")
                 
+                # Suggested Interview Questions
+                st.markdown("---")
+                st.subheader("❓ Suggested Interview Questions")
+                if 'suggested_interview_questions' in result and result['suggested_interview_questions']:
+                    questions = result['suggested_interview_questions']
+                    if isinstance(questions, list) and questions:
+                        for i, question in enumerate(questions):
+                            st.markdown(f"{i+1}. {question}")
+                    else:
+                        st.info("No interview questions were generated or questions are in an unexpected format.")
+                else:
+                    st.info("Interview questions are not available for this CV.")
+
                 # Recruiter's Notes
                 st.markdown("---")
                 st.subheader("📝 Recruiter's Notes")
@@ -1354,22 +1384,28 @@ def show_cv_analyser():
             else:
                 st.error(f"Error analyzing CV: {result.get('message', 'Unknown error')}")
                 
-        except Exception as e:
-            st.error(f"An error occurred while analyzing the CV: {str(e)}")
+        except FileNotFoundError as fnf_error:
+            st.error(f"Error processing CV file: {fnf_error}")
+        except ImportError as imp_error:
+            st.error(f"A required library for CV analysis is missing: {imp_error}. Please check the application setup.")
+            # Consider logging this for the developer: logger.error(f"ImportError in CV Analysis: {imp_error}", exc_info=True)
+        except Exception as e: # General exception
+            st.error(f"An unexpected error occurred while analyzing the CV: {str(e)}")
+            # Consider logging this: logger.error(f"Unexpected CV Analysis Error: {e}", exc_info=True)
         finally:
-            # Clean up the temporary file
-            try:
-                if os.path.exists(tmp_file_path):
-                    os.unlink(tmp_file_path)
-            except Exception as e:
-                st.warning(f"Warning: Could not delete temporary file: {str(e)}")
+            if tmp_file_path and os.path.exists(tmp_file_path):
+                try:
+                    os.remove(tmp_file_path) # Use os.remove
+                except Exception as e_remove: # Different variable for exception in finally
+                    st.warning(f"Warning: Could not delete temporary file {tmp_file_path}: {str(e_remove)}")
+                    # Consider logging this: logger.warning(f"Failed to remove temp file {tmp_file_path}: {e_remove}")
 
 def show_outreach_system():
     """Display the personalized outreach message generation interface."""
-    st.title("🤝 Personalized Outreach System")
+    st.title("🚀 Candidate Outreach Platform")
     st.markdown("""
-    Generate personalized outreach messages for candidates based on their profiles and your job requirements.
-    Upload a candidate's CV and fill in the details to create a tailored message.
+    Craft personalized outreach messages to attract top candidates. 
+    Upload a candidate's CV, fill in the job details, and let AI help you write a compelling message.
     """)
     
     # File uploader for CV
@@ -1386,7 +1422,6 @@ def show_outreach_system():
             job_title = st.text_input("Job Title")
             
         with col2:
-            hiring_manager = st.text_input("Hiring Manager's Name (optional)")
             salary_range = st.text_input("Salary Range (optional)")
             work_location = st.text_input("Work Location")
         
@@ -1402,57 +1437,57 @@ def show_outreach_system():
         submitted = st.form_submit_button("Generate Outreach Message")
     
     # Generate and display the outreach message
-    if submitted and uploaded_file is not None:
+    if submitted:
         with st.spinner("Analyzing CV and generating personalized message..."):
-            # Here you would typically analyze the CV and generate a message
-            # For now, we'll use a template-based approach
+            try:
+                # Simulate CV analysis (in a real app, you'd use your CV analysis logic here)
+                candidate_name = "[Candidate Name]"
+                relevant_skills = ["Python", "Machine Learning", "Data Analysis"]  # Example skills
+                
+                # Generate the message using Groq
+                from groq_search import AICandidateSearch
+                
+                # Initialize the AI search with a default dataset path
+                ai_search = AICandidateSearch()
+                
+                # Generate the email
+                message = ai_search.generate_outreach_email(
+                    candidate_name=candidate_name,
+                    recruiter_name=recruiter_name or "[Your Name]",
+                    company_name=company_name or "[Company Name]",
+                    job_title=job_title or "[Job Title]",
+                    work_location=work_location or "[Location]",
+                    key_requirements=key_requirements or "[Key Requirements]"
+                )
+            except Exception as e:
+                st.error(f"Error generating email: {str(e)}")
+                message = None
             
-            # Simulate CV analysis (in a real app, you'd use your CV analysis logic here)
-            candidate_name = "[Candidate Name]"
-            relevant_skills = ["Python", "Machine Learning", "Data Analysis"]  # Example skills
-            
-            # Generate the message
-            message = f"""
-**Subject:** Exciting Opportunity: {job_title} at {company_name}
+            # If generation fails, fall back to a default message
+            if not message:
+                st.warning("Could not generate email. Using default template.")
+                message = f"""**Subject:** Exciting Opportunity: {job_title} at {company_name}
 
 Dear {candidate_name},
 
-I hope this message finds you well. My name is {recruiter_name}, and I'm a recruiter at {company_name}. """
-            
-            if hiring_manager:
-                message += f"{hiring_manager}, our {job_title.split('(')[0].strip()}, and I "
-            else:
-                message += "I "
-                
-            message += f"came across your profile and were impressed by your experience with {', '.join(relevant_skills[:2])}."
-            
-            message += f"""
+I hope this message finds you well. My name is {recruiter_name}, and I'm a recruiter at {company_name}. I came across your profile and was impressed by your experience with {', '.join(relevant_skills[:2])}.
 
-We're currently looking for a {job_title} to join our team in {work_location}. The role involves working on exciting projects in [brief description of work].
-
-**Why {company_name}?**
-- [Company achievement or unique aspect 1]
-- [Company achievement or unique aspect 2]
-- [Company achievement or unique aspect 3]
+We're currently looking for a {job_title} to join our team in {work_location}. The role involves working on exciting projects that align with your background in {', '.join(relevant_skills[:2])}.
 
 **Key Requirements:**
 """
-            
-            # Add key requirements
-            requirements = [req.strip() for req in key_requirements.split('\n') if req.strip()]
-            for req in requirements:
-                message += f"- {req}\n"
-            
-            message += f"""
+                # Add key requirements
+                requirements = [req.strip() for req in key_requirements.split('\n') if req.strip()]
+                for req in requirements:
+                    message += f"- {req}\n"
+                
+                message += f"""
 
-Your background in [specific experience/skill] particularly caught our attention as it aligns well with what we're looking for.
-
-We'd love to schedule a quick call to discuss this opportunity further and share more about the role. Would you be available for a 15-20 minute chat this week?
+We'd love to schedule a quick call to discuss this opportunity further. Would you be available for a 15-20 minute chat this week?
 
 Best regards,
 {recruiter_name}
-{company_name}
-[Your Contact Information]"""
+{company_name}"""
             
             # Display the generated message
             st.subheader("Generated Outreach Message")
