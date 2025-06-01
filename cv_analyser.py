@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 # Import our document parser
 from docs_parser import DocumentParser
 from groq import Groq
+import streamlit as st
 
 
 # Load environment variables
@@ -27,9 +28,9 @@ class CVAnalyzer:
         Args:
             groq_api_key: Optional Groq API key. If not provided, will try to get from environment.
         """
-        self.groq_api_key = groq_api_key or os.getenv("GROQ_API_KEY")
+        self.groq_api_key = groq_api_key or st.secrets["groq"]["api_key_1"]
         if not self.groq_api_key:
-            raise ValueError("Groq API key not provided. Set GROQ_API_KEY environment variable or pass it as an argument.")
+            raise ValueError("Groq API key not provided in Streamlit secrets.")
         
         # Initialize Groq client
         self.client = Groq(api_key=self.groq_api_key)

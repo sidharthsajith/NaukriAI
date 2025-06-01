@@ -3,3 +3,5 @@ python-dotenv
 streamlit
 pandas
 plotly
+PyPDF2
+python-docx

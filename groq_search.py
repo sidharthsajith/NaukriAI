@@ -2,6 +2,7 @@ import os
 import json
 from typing import List, Dict, Any
 from groq import Groq
+import streamlit as st
 from dataclasses import dataclass
 from typing import List, Dict, Any
 
@@ -20,7 +21,7 @@ class AICandidateSearch:
         self.dataset_path = dataset_path
         self.dataset = self._load_dataset()
         self.client = Groq(
-            api_key=os.getenv("GROQ_API_KEY", "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")
+            api_key=st.secrets["groq"]["api_key_1"]
         )
     
     def _load_dataset(self) -> List[Dict[str, Any]]:

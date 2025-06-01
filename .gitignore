@@ -123,6 +123,8 @@ celerybeat.pid
 .env
 .venv
 .vscode
+.streamlit
+streamlit/
 vscode/
 env/
 venv/
