@@ -72,7 +72,6 @@ graph TD
 ## 🧩 Core Components: Technical Deep Dive
 
 ### ⚡ Performance Optimizations
-- **Vector Embeddings**: All candidate profiles are converted to 768-dimensional vectors for lightning-fast semantic search
 - **Multi-threaded Processing**: Concurrent document parsing and analysis
 - **Intelligent Caching**: Reduces LLM API calls by 60%
 - **Progressive Loading**: Smooth UI experience with large datasets
