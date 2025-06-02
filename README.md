@@ -3,19 +3,83 @@
 **Submission for: HireAI by 100xEngineers Hackathon**  
 **Category:** LLMs / AI for Recruitment
 
+## 📋 Table of Contents
+- [Project Overview](#-project-overview)
+- [Technical Architecture](#-technical-architecture)
+- [Core Components](#-core-components)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [API Documentation](#-api-documentation)
+- [Development](#-development)
+- [License](#-license)
+
 ---
 
-## 🚀 Executive Summary
+## 🚀 Project Overview
 
-NaukriAI is an end-to-end AI-powered hiring copilot designed to dramatically reduce time, cost, and bias in recruiting specialized AI talent. Leveraging advanced LLMs (Groq), NaukriAI enables recruiters to:
-- Instantly search and rank candidates using plain-English queries ("PeopleGPT")
-- Parse and analyze resumes with AI for skill extraction and red-flag detection
-- Auto-score and match candidates to complex job requirements
-- Generate AI-powered pre-screening questions
-- Visualize talent pool insights and analytics
-- Launch personalized, high-conversion outreach in seconds
+NaukriAI is an end-to-end AI-powered hiring copilot designed to streamline the recruitment process for technical roles. The platform leverages advanced LLMs (Groq) to provide intelligent candidate matching, CV analysis, and talent pool analytics.
 
-**Demo-ready, extensible, and built for real-world impact.**
+### Key Features
+- **Natural Language Search**: Find candidates using plain-English queries ("PeopleGPT")
+- **AI-Powered CV Analysis**: Extract skills, experience, and red flags from resumes
+- **Advanced Candidate Matching**: Score and rank candidates based on job requirements
+- **Talent Analytics**: Visualize skill distributions and talent pool metrics
+- **Personalized Outreach**: Generate tailored outreach messages for candidates
+- **Interview Question Generation**: AI-generated questions based on candidate profiles
+
+## 🏗️ Technical Architecture
+
+NaukriAI is built using a modular Python architecture with the following key components:
+
+- **Frontend**: Streamlit-based web interface
+- **Backend**: Python 3.8+
+- **AI/ML**: Groq LLM API (Llama 3.3 70B)
+- **Data Processing**: Custom document parsing and analysis pipelines
+- **Data Storage**: JSON-based storage for candidate data
+
+## 🧩 Core Components
+
+### 1. `streamlit_app.py`
+Main application entry point and UI layer. Implements the Streamlit-based web interface with the following pages:
+- **Dashboard**: Overview of talent pool metrics
+- **CV Analyzer**: Upload and analyze candidate resumes
+- **AI Candidate Search**: Natural language search for candidates
+- **Advanced Matching**: Configure and run candidate matching
+- **Outreach**: Generate personalized outreach messages
+
+### 2. `cv_analyser.py`
+Responsible for parsing and analyzing CVs using Groq's LLM:
+- Supports PDF and DOCX formats
+- Extracts key information (skills, experience, education)
+- Identifies red flags and potential issues
+- Generates candidate assessment reports
+
+### 3. `groq_search.py`
+Implements the natural language search functionality:
+- Processes natural language queries
+- Maps queries to structured search terms
+- Filters and ranks candidates
+- Uses Groq LLM for semantic understanding
+
+### 4. `advanced_matching.py`
+Handles candidate-to-job matching:
+- Implements scoring algorithms
+- Calculates skill gaps
+- Generates interview questions
+- Ranks candidates based on job requirements
+
+### 5. `docs_parser.py`
+Utility module for document processing:
+- Extracts text from PDF and DOCX files
+- Handles different document structures
+- Normalizes text for analysis
+- Processes tables and formatting
+
+### 6. `dataset.py`
+Manages candidate data:
+- Generates synthetic candidate data for testing
+- Handles data loading and persistence
+- Provides data validation and transformation
 
 ---
 
@@ -65,30 +129,163 @@ NaukriAI is an end-to-end AI-powered hiring copilot designed to dramatically red
 
 ---
 
-## 🖥️ Demo & Usage
+## 💻 Installation
 
-**1. Launch the App**
+### Prerequisites
+- Python 3.8 or higher
+- Groq API key (https://console.groq.com/)
+- Required packages (see `requirements.txt`)
+
+### Setup Instructions
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd NaukriAI
 ```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+```bash
+echo "GROQ_API_KEY=your_api_key_here" > .env
+```
+
+## 🚀 Usage
+
+### Running the Application
+
+1. Start the Streamlit app:
+```bash
 streamlit run streamlit_app.py
 ```
 
-**2. Explore the Workflow:**
-- **PeopleGPT Search:** Type a plain-English query to instantly find and rank candidates
-- **CV Analyzer:** Upload a resume for AI-powered parsing and assessment
-- **Advanced Matching:** Match candidates to job requirements with smart scoring
-- **Pre-Screening Q&A:** Generate interview questions based on candidate gaps
-- **Analytics Dashboard:** Visualize key insights about your talent pool
-- **Outreach Generator:** Craft and download personalized outreach messages
+2. Open your browser to `http://localhost:8501`
 
-**See the full presentation script below for a step-by-step demo scenario!**
+### Key Features
+
+#### 1. PeopleGPT Search
+- Type natural language queries to find candidates
+- Example: "Find senior Python developers with ML experience in Europe"
+- Results include match scores and key qualifications
+
+#### 2. CV Analyzer
+- Upload PDF or DOCX resumes
+- View AI-generated analysis including:
+  - Skills and experience extraction
+  - Red flag detection
+  - Candidate assessment
+
+#### 3. Advanced Matching
+- Upload job descriptions or enter requirements manually
+- Configure matching criteria and weights
+- View ranked candidates with match scores
+- Generate interview questions for specific candidates
+
+#### 4. Talent Analytics
+- Visualize skill distributions
+- Analyze experience levels
+- Track hiring metrics
+- Export reports
 
 ---
 
-## 🤖 Tech Stack
-- Python, Streamlit (UI)
-- Groq LLM API (AI/LLM reasoning)
-- Plotly (analytics/visualization)
-- Modular backend for candidate data and parsing
+## 📚 API Documentation
+
+### CVAnalyzer Class
+```python
+class CVAnalyzer:
+    """Analyzes CVs using Groq's LLM API."""
+    
+    def __init__(self, groq_api_key: str = None):
+        """Initialize with optional Groq API key."""
+        
+    def analyze_cv(self, file_path: Union[str, Path]) -> Dict[str, Any]:
+        """Analyze a CV file and return structured results."""
+```
+
+### AICandidateSearch Class
+```python
+class AICandidateSearch:
+    """Handles natural language candidate search."""
+    
+    def search_candidates(self, query: str) -> List[Dict[str, Any]]:
+        """Search candidates using natural language query."""
+```
+
+### AdvancedCandidateMatcher Class
+```python
+class AdvancedCandidateMatcher:
+    """Matches candidates to job requirements."""
+    
+    def match_candidates(
+        self,
+        required_skills: List[str],
+        preferred_skills: List[str] = None,
+        seniority: str = None,
+        location: str = None,
+        employment_type: str = None,
+        experience_years: str = None,
+        top_n: int = 10
+    ) -> List[ScoredCandidate]:
+        """Match candidates based on job requirements."""
+```
+
+## 🛠️ Development
+
+### Project Structure
+```
+NaukriAI/
+├── streamlit_app.py     # Main application
+├── cv_analyser.py       # CV analysis module
+├── groq_search.py       # Natural language search
+├── advanced_matching.py # Candidate matching
+├── docs_parser.py       # Document parsing
+├── dataset.py           # Data management
+├── requirements.txt     # Dependencies
+└── README.md           # This file
+```
+
+### Adding New Features
+1. Create a new branch: `git checkout -b feature/your-feature`
+2. Make your changes
+3. Add tests if applicable
+4. Run linter: `pylint *.py`
+5. Commit changes: `git commit -m "Add your feature"`
+6. Push to branch: `git push origin feature/your-feature`
+7. Create a pull request
+
+### Testing
+Run the test suite:
+```bash
+pytest
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📧 Contact
+
+For questions or feedback, please contact [Your Email].
 
 ---
 
