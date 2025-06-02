@@ -76,12 +76,6 @@ graph TD
 - **Intelligent Caching**: Reduces LLM API calls by 60%
 - **Progressive Loading**: Smooth UI experience with large datasets
 
-### 🔒 Data Security
-- End-to-end encryption for all candidate data
-- Role-based access control (RBAC)
-- GDPR and CCPA compliant
-- Regular security audits and penetration testing
-
 ### Core Components
 
 ### 1. `streamlit_app.py`
