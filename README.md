@@ -62,7 +62,7 @@ graph TD
 ```
 
 ### Tech Stack
-- **Frontend**: Streamlit
+- **Frontend**: React + Tailwind
 - **Backend**: Python 3.8+
 - **AI/ML**: Groq LLM API
 - **Data**: JSON-based storage
