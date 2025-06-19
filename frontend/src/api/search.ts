@@ -95,6 +95,9 @@ export const searchApi = {
       };
       
       const response = await apiClient.post('/advanced-match', requestData);
+      // Debug: Log full API response and data to console
+      console.log('AdvancedMatch API raw response:', response);
+      console.log('AdvancedMatch API response data:', response.data);
       
       // Handle string response from FastAPI
       let data = response.data;
@@ -109,6 +112,7 @@ export const searchApi = {
           };
         }
       }
+      console.log('AdvancedMatch parsed response data:', data);
       
       return {
         matches: Array.isArray(data.matches) ? data.matches.map((candidate: any) => ({

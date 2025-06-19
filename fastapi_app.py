@@ -208,18 +208,20 @@ def api_advanced_match(req: AdvancedMatchRequest):
             top_n=req.top_n,
         )
         # `ScoredCandidate` is a dataclass; convert to dicts for JSON serialisation.
+        matches = [
+            {
+                **c.candidate,
+                "score": c.score,
+                "skill_matches": c.skill_matches,
+                "missing_skills": c.missing_skills,
+                "skill_gap_analysis": c.skill_gap_analysis,
+                "interview_questions": c.interview_questions,
+            }
+            for c in candidates
+        ]
         return {
-            "candidates": [
-                {
-                    **c.candidate,
-                    "score": c.score,
-                    "skill_matches": c.skill_matches,
-                    "missing_skills": c.missing_skills,
-                    "skill_gap_analysis": c.skill_gap_analysis,
-                    "interview_questions": c.interview_questions,
-                }
-                for c in candidates
-            ]
+            "matches": matches,
+            "total": len(matches)
         }
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

@@ -14,6 +14,10 @@ export const cvApi = {
         },
       });
       
+      // Log raw response to help debug CV analyzer API
+      console.log('CV analyzer raw response:', response);
+      console.log('CV analyzer response data:', response.data);
+      
       // Handle string response from FastAPI
       let data = response.data;
       if (typeof data === 'string') {
@@ -28,18 +32,45 @@ export const cvApi = {
         }
       }
       
-      // Ensure we have all required fields
+      // Normalize backend response. FastAPI may wrap analysis under `analysis` key
+      let analysisData: any = data;
+      if (data && data.analysis) {
+        analysisData = {
+          ...data.analysis,
+          // Flatten candidate_summary to top-level for easier mapping
+          ...data.analysis.candidate_summary,
+        };
+      }
+
+      // Extract and transform fields with sensible defaults
+      const skills: string[] = Array.isArray(analysisData.key_skills)
+        ? analysisData.key_skills
+        : Array.isArray(analysisData.skills)
+        ? analysisData.skills
+        : [];
+
+      // Attempt to parse experience from textual representations like "5 years" or "Less than 1 year"
+      let yearsExp = 0;
+      if (typeof analysisData.years_experience === 'number') {
+        yearsExp = analysisData.years_experience;
+      } else if (typeof analysisData.years_experience === 'string') {
+        const match = analysisData.years_experience.match(/(\d+)/);
+        yearsExp = match ? parseInt(match[1], 10) : 0;
+      } else if (typeof analysisData.experience_years === 'number') {
+        yearsExp = analysisData.experience_years;
+      }
+
       return {
-        name: data.name || 'Unknown',
-        email: data.email || '',
-        phone: data.phone,
-        skills: Array.isArray(data.skills) ? data.skills : [],
-        experience_years: data.experience_years || 0,
-        seniority: data.seniority || 'Unknown',
-        summary: data.summary || '',
-        education: Array.isArray(data.education) ? data.education : [],
-        certifications: Array.isArray(data.certifications) ? data.certifications : [],
-        score: data.score || 0,
+        name: analysisData.name || 'Unknown',
+        email: analysisData.email || '',
+        phone: analysisData.phone,
+        skills,
+        experience_years: yearsExp,
+        seniority: analysisData.current_role || analysisData.seniority || 'Unknown',
+        summary: analysisData.overall_assessment || analysisData.summary || '',
+        education: Array.isArray(analysisData.education) ? analysisData.education : [],
+        certifications: Array.isArray(analysisData.certifications) ? analysisData.certifications : [],
+        score: analysisData.score || 0,
       };
     } catch (error: any) {
       if (error.isNetworkError) {
