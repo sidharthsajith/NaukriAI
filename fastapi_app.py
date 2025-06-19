@@ -163,6 +163,32 @@ def api_search_candidates(req: SearchRequest):
     try:
         searcher = AICandidateSearch()
         results = searcher.search_candidates(req.query)
+
+        # Post-process: enrich minimal LLM results (name / reason only) with full dataset info
+        if results:
+            df = load_data()
+            df_by_name = {row["name"]: row for _, row in df.iterrows()}
+            enriched_results = []
+            for item in results:
+                if not isinstance(item, dict):
+                    # skip malformed entry
+                    continue
+                base = dict(item)
+                record = df_by_name.get(base.get("name"))
+                if record is not None:
+                    # Fill missing keys from dataset where not already present
+                    for key in [
+                        "skills",
+                        "seniority",
+                        "employment_type",
+                        "experience_years",
+                        "location",
+                    ]:
+                        if key not in base or base[key] in (None, "", []):
+                            base[key] = record[key]
+                enriched_results.append(base)
+            results = enriched_results
+
         return {"results": results}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
