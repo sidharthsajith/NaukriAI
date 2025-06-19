@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { datasetApi } from '../api/dataset';
+import { datasetApi } from '../api/dataset_local';
 
 export const useTopSkills = (topN: number = 10) => {
   return useQuery({

@@ -1,4 +1,102 @@
-// NOTE: The dashboard now reads data directly from the local dataset.json file that sits in the Vite `public` folder (or project root during dev).
+// Re-export datasetApi from dataset_local.ts to keep backward compatibility.
+export { datasetApi } from './dataset_local';
+  ExperienceDistribution,
+  EmploymentTypeDistribution,
+} from '../types/api';
+
+let cache: any[] | null = null;
+const DATASET_URL = '/dataset.json';
+
+async function loadDataset(): Promise<any[]> {
+  if (cache) return cache;
+  const res = await fetch(DATASET_URL);
+  if (!res.ok) throw new Error(`Failed to fetch dataset.json (status ${res.status})`);
+  const json = await res.json();
+  if (!Array.isArray(json)) throw new Error('dataset.json should be an array of records');
+  cache = json;
+  return json;
+}
+
+function pct(part: number, whole: number): number {
+  return whole === 0 ? 0 : Number(((part / whole) * 100).toFixed(1));
+}
+
+export const datasetApi = {
+  async getTopSkills(topN = 10): Promise<Skill[]> {
+    const data = await loadDataset();
+    const counts: Record<string, number> = {};
+    data.forEach(rec => {
+      (rec.skills ?? []).forEach((s: string) => {
+        counts[s] = (counts[s] ?? 0) + 1;
+      });
+    });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, topN)
+      .map(([name, count]) => ({ name, count, percentage: pct(count, total) }));
+  },
+
+  async getSeniorityDistribution(): Promise<SeniorityDistribution[]> {
+    const data = await loadDataset();
+    const counts: Record<string, number> = {};
+    data.forEach(rec => {
+      const key = rec.seniority ?? 'Unknown';
+      counts[key] = (counts[key] ?? 0) + 1;
+    });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return Object.entries(counts).map(([seniority, count]) => ({
+      seniority,
+      count,
+      percentage: pct(count, total),
+    }));
+  },
+
+  async getExperienceDistribution(): Promise<ExperienceDistribution[]> {
+    const data = await loadDataset();
+    const counts: Record<string, number> = {};
+    data.forEach(rec => {
+      const key = rec.experience_years ?? 'Unknown';
+      counts[key] = (counts[key] ?? 0) + 1;
+    });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return Object.entries(counts).map(([experience_range, count]) => ({
+      experience_range,
+      count,
+      percentage: pct(count, total),
+    }));
+  },
+
+  async getEmploymentTypeDistribution(): Promise<EmploymentTypeDistribution[]> {
+    const data = await loadDataset();
+    const counts: Record<string, number> = {};
+    data.forEach(rec => {
+      const key = rec.employment_type ?? 'Unknown';
+      counts[key] = (counts[key] ?? 0) + 1;
+    });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return Object.entries(counts).map(([employment_type, count]) => ({
+      employment_type,
+      count,
+      percentage: pct(count, total),
+    }));
+  },
+
+  async getSkillsBySeniority(seniority: string): Promise<Skill[]> {
+    const data = await loadDataset();
+    const counts: Record<string, number> = {};
+    data.filter(rec => rec.seniority === seniority).forEach(rec => {
+      (rec.skills ?? []).forEach((s: string) => {
+        counts[s] = (counts[s] ?? 0) + 1;
+      });
+    });
+    const total = Object.values(counts).reduce((a, b) => a + b, 0);
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([name, count]) => ({ name, count, percentage: pct(count, total) }));
+  },
+};
 // No network requests are made – everything is computed client-side.
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
@@ -64,8 +162,8 @@ export const datasetApi = {
       percentage: percentage(count, total),
     }));
   }
-    try {
-      const response = await apiClient.get('/dataset/seniority-distribution');
+
+('/dataset/seniority-distribution');
       const data = response.data;
       
       if (Array.isArray(data)) {
@@ -76,15 +174,14 @@ export const datasetApi = {
         }));
       }
       return data;
-    } catch (error: any) {
+    } 
       if (error.isNetworkError) {
         console.warn('API unavailable, using mock data for seniority distribution');
-        await simulateApiDelay(500);
-        return mockSeniorityDistribution;
+        await (500);
+        return ;
       }
-      throw error;
-    }
-  },
+      
+    
 
   getExperienceDistribution: async (): Promise<ExperienceDistribution[]> => {
     const data = await loadDataset();
@@ -100,8 +197,8 @@ export const datasetApi = {
       percentage: percentage(count, total),
     }));
   }
-    try {
-      const response = await apiClient.get('/dataset/experience-distribution');
+
+('/dataset/experience-distribution');
       const data = response.data;
       
       if (Array.isArray(data)) {
@@ -112,15 +209,14 @@ export const datasetApi = {
         }));
       }
       return data;
-    } catch (error: any) {
+    } 
       if (error.isNetworkError) {
         console.warn('API unavailable, using mock data for experience distribution');
-        await simulateApiDelay(500);
-        return mockExperienceDistribution;
+        await (500);
+        return ;
       }
-      throw error;
-    }
-  },
+      
+    
 
   getEmploymentTypeDistribution: async (): Promise<EmploymentTypeDistribution[]> => {
     const data = await loadDataset();
@@ -136,8 +232,8 @@ export const datasetApi = {
       percentage: percentage(count, total),
     }));
   }
-    try {
-      const response = await apiClient.get('/dataset/employment-type-distribution');
+
+('/dataset/employment-type-distribution');
       const data = response.data;
       
       if (Array.isArray(data)) {
@@ -148,15 +244,14 @@ export const datasetApi = {
         }));
       }
       return data;
-    } catch (error: any) {
+    } 
       if (error.isNetworkError) {
         console.warn('API unavailable, using mock data for employment type distribution');
-        await simulateApiDelay(500);
-        return mockEmploymentTypeDistribution;
+        await (500);
+        return ;
       }
-      throw error;
-    }
-  },
+      
+    
 
   getSkillsBySeniority: async (seniority: string): Promise<Skill[]> => {
     const data = await loadDataset();
@@ -172,8 +267,8 @@ export const datasetApi = {
       .slice(0, 10)
       .map(([name, count]) => ({ name, count, percentage: percentage(count, total) }));
   },
-    try {
-      const response = await apiClient.get(`/dataset/skills-by-seniority/${encodeURIComponent(seniority)}`);
+
+(`/dataset/skills-by-seniority/${encodeURIComponent(seniority)}`);
       const data = response.data;
       
       if (Array.isArray(data)) {
@@ -184,14 +279,13 @@ export const datasetApi = {
         }));
       }
       return data;
-    } catch (error: any) {
+    } 
       if (error.isNetworkError) {
         console.warn('API unavailable, using mock data for skills by seniority');
-        await simulateApiDelay(500);
+        await (500);
         // Return filtered mock skills based on seniority
-        return mockSkills.slice(0, 5);
+        return .slice(0, 5);
       }
-      throw error;
-    }
-  },
+      
+    
 };
