@@ -49,20 +49,16 @@ NaukriAI is built with a modern, scalable architecture:
 
 ```mermaid
 graph TD
-    A[React + Tailwind Frontend] --> B[API Layer (Python)]
-    B --> C[AI Processing (Groq LLM)]
-    B --> D[Document Parser]
-    B --> E[Scoring Engine]
-    B --> F[Analytics Engine]
-    B --> G[Data Layer (JSON/DB)]
-    B --> H[File Upload Handler]
-    C --> G
-    D --> G
-    F --> G
+    A[Streamlit UI] --> B[API Layer]
+    B --> C[AI Processing]
+    C --> D[Groq LLM 70B]
+    C --> E[Document Parser]
+    C --> F[Scoring Engine]
+    B --> G[Data Layer]
 ```
 
 ### Tech Stack
-- **Frontend**: React + Tailwind
+- **Frontend**: Streamlit
 - **Backend**: Python 3.8+
 - **AI/ML**: Groq LLM API
 - **Data**: JSON-based storage
