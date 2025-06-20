@@ -55,6 +55,8 @@ export const ExperienceChart: React.FC = () => {
                 borderRadius: '8px',
                 color: '#F9FAFB'
               }}
+              labelStyle={{ color: '#F9FAFB' }}
+              itemStyle={{ color: '#F9FAFB' }}
             />
             <Area 
               type="monotone" 

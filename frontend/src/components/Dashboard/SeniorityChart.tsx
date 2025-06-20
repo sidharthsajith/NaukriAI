@@ -51,9 +51,10 @@ export const SeniorityChart: React.FC = () => {
               label={({ seniority, percentage }) => `${seniority}: ${percentage}%`}
               outerRadius={80}
               fill="#8884d8"
+              nameKey="seniority"
               dataKey="count"
             >
-              {distribution?.map((entry, index) => (
+              {distribution?.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
@@ -64,6 +65,8 @@ export const SeniorityChart: React.FC = () => {
                 borderRadius: '8px',
                 color: '#F9FAFB'
               }}
+              labelStyle={{ color: '#F9FAFB' }}
+              itemStyle={{ color: '#F9FAFB' }}
             />
             <Legend />
           </PieChart>
