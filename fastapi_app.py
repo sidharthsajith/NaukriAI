@@ -14,12 +14,13 @@ from pathlib import Path
 from typing import List, Optional, Any, Dict
 
 import pandas as pd
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 # Local modules – these are already a part of the project.
 from cv_analyser import CVAnalyzer
+from cv_comparator import CVComparator
 from groq_search import AICandidateSearch
 from advanced_matching import AdvancedCandidateMatcher, ScoredCandidate
 
@@ -246,6 +247,38 @@ async def api_analyze_cv(file: UploadFile = File(...)):
             tmp_path.unlink(missing_ok=True)  # Clean up temporary file
         except Exception:
             pass
+
+
+@app.post("/compare-cvs")
+async def api_compare_cvs(
+    criteria: str = Form(...),
+    cv1: UploadFile = File(...),
+    cv2: UploadFile = File(...),
+):
+    """Upload two CVs and recruiter criteria; return structured comparison."""
+    suffix1 = Path(cv1.filename).suffix or ".cv1"
+    suffix2 = Path(cv2.filename).suffix or ".cv2"
+    tmp1_path = tmp2_path = None
+    try:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix1) as tmp1:
+            tmp1.write(await cv1.read())
+            tmp1_path = Path(tmp1.name)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix2) as tmp2:
+            tmp2.write(await cv2.read())
+            tmp2_path = Path(tmp2.name)
+
+        comparator = CVComparator()
+        result = comparator.compare(str(tmp1_path), str(tmp2_path), criteria)
+        return result
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+    finally:
+        for p in (tmp1_path, tmp2_path):
+            try:
+                if p is not None:
+                    p.unlink(missing_ok=True)
+            except Exception:
+                pass
 
 ###############################################################################
 # Healthcheck                                                                  

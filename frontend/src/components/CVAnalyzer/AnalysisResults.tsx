@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Phone, GraduationCap, Award, Briefcase, Star } from 'lucide-react';
+import { User, Mail, Phone, GraduationCap, Award, Briefcase, CheckCircle, AlertTriangle, HelpCircle } from 'lucide-react';
 import { CVAnalysisResult } from '../../types/api';
 
 interface AnalysisResultsProps {
@@ -7,15 +7,9 @@ interface AnalysisResultsProps {
 }
 
 export const AnalysisResults: React.FC<AnalysisResultsProps> = ({ result }) => {
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return 'text-green-600 dark:text-green-400';
-    if (score >= 60) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-red-600 dark:text-red-400';
-  };
-
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header with Score */}
+      {/* Header */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center">
@@ -36,15 +30,6 @@ export const AnalysisResults: React.FC<AnalysisResultsProps> = ({ result }) => {
                   {result.phone}
                 </div>
               )}
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="flex items-center mb-1">
-              <Star className="h-5 w-5 text-yellow-500 mr-1" />
-              <span className="text-sm text-gray-500 dark:text-gray-400">CV Score</span>
-            </div>
-            <div className={`text-3xl font-bold ${getScoreColor(result.score)}`}>
-              {result.score}/100
             </div>
           </div>
         </div>
@@ -87,6 +72,101 @@ export const AnalysisResults: React.FC<AnalysisResultsProps> = ({ result }) => {
           ))}
         </div>
       </div>
+
+      {/* Strengths */}
+      {result.strengths && result.strengths.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center mb-3">
+            <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Strengths
+            </h3>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            {result.strengths.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Red Flags */}
+      {result.red_flags && result.red_flags.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center mb-3">
+            <AlertTriangle className="h-5 w-5 text-red-600 dark:text-red-400 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Red Flags
+            </h3>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            {result.red_flags.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Verification Needed */}
+      {result.verification_needed && result.verification_needed.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center mb-3">
+            <HelpCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 mr-2" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Verification Needed
+            </h3>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            {result.verification_needed.map((item, idx) => (
+              <li key={idx}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Recommendation */}
+      {result.recommended !== undefined && (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Recommendation
+          </h3>
+          <p className="mb-2 text-gray-700 dark:text-gray-300">
+            <span className="font-medium">Recommended:</span>{' '}
+            {result.recommended ? 'Yes' : 'No'}
+          </p>
+          {result.recommendation_reasoning && (
+            <p className="text-gray-700 dark:text-gray-300">
+              {result.recommendation_reasoning}
+            </p>
+          )}
+          {result.suggested_roles && result.suggested_roles.length > 0 && (
+            <p className="mt-2 text-gray-700 dark:text-gray-300">
+              <span className="font-medium">Suggested Roles:</span>{' '}
+              {result.suggested_roles.join(', ')}
+            </p>
+          )}
+          {result.suggested_compensation_range && (
+            <p className="mt-2 text-gray-700 dark:text-gray-300">
+              <span className="font-medium">Suggested Compensation:</span>{' '}
+              {`${result.suggested_compensation_range.min} - ${result.suggested_compensation_range.max} ${result.suggested_compensation_range.currency}`}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Interview Questions */}
+      {result.suggested_interview_questions && result.suggested_interview_questions.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+            Suggested Interview Questions
+          </h3>
+          <ul className="list-disc list-inside space-y-1 text-gray-700 dark:text-gray-300">
+            {result.suggested_interview_questions.map((q, idx) => (
+              <li key={idx}>{q}</li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Education */}
       {result.education.length > 0 && (

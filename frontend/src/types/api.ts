@@ -61,6 +61,7 @@ export interface AdvancedMatchResponse {
 }
 
 export interface CVAnalysisResult {
+  // Basic candidate info
   name: string;
   email: string;
   phone?: string;
@@ -71,6 +72,19 @@ export interface CVAnalysisResult {
   education: string[];
   certifications: string[];
   score: number;
+  // Additional analysis fields
+  strengths?: string[];
+  red_flags?: string[];
+  verification_needed?: string[];
+  recommended?: boolean;
+  recommendation_reasoning?: string;
+  suggested_roles?: string[];
+  suggested_compensation_range?: {
+    min: number;
+    max: number;
+    currency: string;
+  };
+  suggested_interview_questions?: string[];
 }
 
 // FastAPI validation error structure

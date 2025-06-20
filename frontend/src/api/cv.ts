@@ -49,6 +49,9 @@ export const cvApi = {
         ? analysisData.skills
         : [];
 
+      // Determine recommendation info if present
+      const recommendationData: any = (data && data.analysis && data.analysis.recommendation) || analysisData.recommendation || {};
+
       // Attempt to parse experience from textual representations like "5 years" or "Less than 1 year"
       let yearsExp = 0;
       if (typeof analysisData.years_experience === 'number') {
@@ -71,6 +74,14 @@ export const cvApi = {
         education: Array.isArray(analysisData.education) ? analysisData.education : [],
         certifications: Array.isArray(analysisData.certifications) ? analysisData.certifications : [],
         score: analysisData.score || 0,
+        strengths: analysisData.strengths || [],
+        red_flags: analysisData.red_flags || [],
+        verification_needed: analysisData.verification_needed || [],
+        recommended: recommendationData.recommended,
+        recommendation_reasoning: recommendationData.reasoning,
+        suggested_roles: recommendationData.suggested_roles || [],
+        suggested_compensation_range: recommendationData.suggested_compensation_range,
+        suggested_interview_questions: (data as any).suggested_interview_questions || [],
       };
     } catch (error: any) {
       if (error.isNetworkError) {
