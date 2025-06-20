@@ -97,4 +97,15 @@ export const cvApi = {
       throw error;
     }
   },
+
+  compareCVs: async (cv1: File, cv2: File, criteria: string): Promise<any> => {
+    const formData = new FormData();
+    formData.append('criteria', criteria);
+    formData.append('cv1', cv1);
+    formData.append('cv2', cv2);
+    const response = await apiClient.post('/compare-cvs', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+  },
 };

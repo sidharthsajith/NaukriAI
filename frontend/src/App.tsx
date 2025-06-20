@@ -6,6 +6,7 @@ import { Dashboard } from './pages/Dashboard';
 import { AISearch } from './pages/AISearch';
 import { AdvancedMatch } from './pages/AdvancedMatch';
 import { CVAnalyzer } from './pages/CVAnalyzer';
+import { CVComparator } from './pages/CVComparator';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ function App() {
               <Route path="search" element={<AISearch />} />
               <Route path="match" element={<AdvancedMatch />} />
               <Route path="cv-analyzer" element={<CVAnalyzer />} />
+              <Route path="cv-compare" element={<CVComparator />} />
             </Route>
           </Routes>
         </div>
