@@ -105,6 +105,20 @@ export interface ApiError {
 }
 
 // Health check response
+// Outreach email generation
+export interface OutreachEmailRequest {
+  candidate_name: string;
+  recruiter_name: string;
+  company_name: string;
+  job_title: string;
+  work_location: string;
+  key_requirements: string;
+}
+
+export interface OutreachEmailResponse {
+  email: string;
+}
+
 export interface HealthResponse {
   [key: string]: string;
 }

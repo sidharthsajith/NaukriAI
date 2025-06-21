@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Layout } from './components/Layout/Layout';
@@ -7,6 +6,7 @@ import { AISearch } from './pages/AISearch';
 import { AdvancedMatch } from './pages/AdvancedMatch';
 import { CVAnalyzer } from './pages/CVAnalyzer';
 import { CVComparator } from './pages/CVComparator';
+import { OutreachEmail } from './pages/OutreachEmail';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +30,7 @@ function App() {
               <Route path="match" element={<AdvancedMatch />} />
               <Route path="cv-analyzer" element={<CVAnalyzer />} />
               <Route path="cv-compare" element={<CVComparator />} />
+              <Route path="email" element={<OutreachEmail />} />
             </Route>
           </Routes>
         </div>

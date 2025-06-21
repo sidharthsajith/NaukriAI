@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { BarChart3, Search, Target, FileText, FileDiff, X } from 'lucide-react';
+import { BarChart3, Search, Target, FileText, FileDiff, Mail, X } from 'lucide-react';
 import { clsx } from 'clsx';
 
 interface SidebarProps {
@@ -14,6 +14,7 @@ const navigation = [
   { name: 'Advanced Match', href: '/match', icon: Target },
   { name: 'CV Analyzer', href: '/cv-analyzer', icon: FileText },
   { name: 'CV Comparator', href: '/cv-compare', icon: FileDiff },
+  { name: 'Outreach Email', href: '/email', icon: Mail },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {

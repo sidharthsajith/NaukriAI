@@ -118,6 +118,16 @@ class AdvancedMatchRequest(BaseModel):
     top_n: int = 5
 
 
+class OutreachEmailRequest(BaseModel):
+    """Request body for generating a personalised outreach email."""
+    candidate_name: str
+    recruiter_name: str
+    company_name: str
+    job_title: str
+    work_location: str
+    key_requirements: str
+
+
 ###############################################################################
 # Dataset endpoints                                                            
 ###############################################################################
@@ -224,6 +234,24 @@ def api_advanced_match(req: AdvancedMatchRequest):
             "matches": matches,
             "total": len(matches)
         }
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.post("/generate-outreach-email")
+def api_generate_outreach_email(req: OutreachEmailRequest):
+    """Generate a personalised outreach email for a candidate."""
+    try:
+        searcher = AICandidateSearch()
+        email_text = searcher.generate_outreach_email(
+            candidate_name=req.candidate_name,
+            recruiter_name=req.recruiter_name,
+            company_name=req.company_name,
+            job_title=req.job_title,
+            work_location=req.work_location,
+            key_requirements=req.key_requirements,
+        )
+        return {"email": email_text}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 
